@@ -2,39 +2,12 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
-
-input[type=text], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-  resize: vertical;
-}
-
-input[type=button] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type=button]:hover {
-  background-color: #45a049;
-}
-
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+<style type='text/css'>
+@import url("bootstrap.css");
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -64,20 +37,34 @@ function checkValue(){
 </head>
 <body>
 
-<h3>게시글 등록</h3>
+<h1 style="color:tomato; text-align:center">PETSPITAL</h1>
 
-<div class="container">
-  <form action="/board/regist" method="POST" enctype="multipart/form-data">
-    <label>제목</label>
-    <input type="text"  name="board_title">
-    <label>내용</label>
-    <textarea id="subject" name="board_text" style="height:200px"></textarea>
-    <label>사진</label>
-    <input type="file" name="images" multiple />
-    <input type="button" value="목록으로">
-    <input type="button" value="등록하기">
-  </form>
-</div>
+<form action="/board/regist" method="POST" enctype="multipart/form-data">
+  <fieldset>
+    <div class="form-group">
+    <label for="staticEmail" class="col-sm-2 col-form-label">제목</label>
+    <div class="col-sm-10">
+    <input type="text"  name="board_title" class="form-control" id="exampleInputEmail1">
+    </div></div>
+    <div class="form-group">
+    <label for="staticEmail" class="col-sm-2 col-form-label">내용</label>
+    <div class="col-sm-10">
+    <textarea class="form-control" id="exampleTextarea" rows="3" name="board_text"></textarea>
+    </div></div>
+    <div class="form-group">
+      <label for="staticEmail" class="col-sm-2 col-form-label">사진</label>
+    <div class="col-sm-10">
+    <input type="file" name="images" multiple class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp"/>
+    <small id="fileHelp" class="form-text text-muted"></small>
+    </div></div>
+    <div class="form-group">
+    <div class="col-sm-10">
+    <button type="button" class="btn btn-outline-primary">목록</button>
+    <button type="button" class="btn btn-outline-primary">등록</button>
+    </div></div>
+  </fieldset>
+</form>
+
 
 </body>
 </html>
