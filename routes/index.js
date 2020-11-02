@@ -13,9 +13,9 @@ router.get("/admin", function(req, res, next){
 router.get("/member", function(req, res, next){
     // res.render("index", {title:"Express"});
     if(req.session.displayName){
-        res.render("M_main", {"nickname":req.session.displayName});
+        res.render("A_main", {"nickname":req.session.displayName});
     }else{
-        res.render("M_main", {"nickname":""});
+        res.render("A_main", {"nickname":""});
     }
 });
 

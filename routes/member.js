@@ -50,7 +50,7 @@ router.post("/login", function (req, res, next) {
                     req.session.displayID = uid;
                     req.session.save(function () {
                         // res.redirect('/board/list');
-                        res.redirect("/member");
+                        res.render("A_main", {"nickname":req.session.displayName});
                     });
                 }
             }
@@ -60,8 +60,9 @@ router.post("/login", function (req, res, next) {
 
 router.get("/logout", function (req, res, next) {
     delete req.session.displayName;
+    delete req.session.displayID;
     req.session.save(function () {
-        res.redirect('/member/login');
+        res.redirect('/member');
     });
 });
 
