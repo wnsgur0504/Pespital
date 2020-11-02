@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+#email_id, #email_address, #email_address_select {
+  width: 32%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=text], select, textarea, [type=password] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=button] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=button]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+  $($("input[type='button']")[0]).click(function(){
+    location.href="/login";
+  });
+  $($("input[type='button']")[1]).click(function(){
+    checkValue();
+    // location.href="/board/list";
+  });
+});
+
+function checkValue(){
+  if($("form input[name=member_id]").val()==""){
+    alert("아이디를 입력 해주세요!");
+    $("#member_id").focus();
+  }else if($("form input[name=password1]").val()==""){
+    alert("비밀번호를 입력 해주세요!");
+    $("#password1").focus();
+  }else if($("form input[name=password2]").val()==""){
+    alert("비밀번호 확인을 입력 해주세요!");
+    $("#password2").focus();
+  }else if(($("form input[name=password1]").val())!=($("form input[name=password2]").val())){
+    alert("비밀번호와 확인이 다릅니다!");
+    $("#password1").focus();
+  }else if($("form input[name=member_name]").val()==""){
+    alert("이름을 입력 해주세요!");
+    $("#member_name").focus();
+  }else if($("form input[name=email_id]").val()==""){
+    alert("이메일 아이디를 입력 해주세요!");
+    $("#email_id").focus();
+  }else if($("form input[name=email_address]").val()==""){
+    alert("이메일 주소를 입력 해주세요!");
+    $("#email_address").focus();
+  }else if($("form input[name=member_phone]").val()==""){
+    alert("연락처를 입력 해주세요!");
+    $("#member_phone").focus();
+  }else if($("form input[name=member_nickname]").val()==""){
+    alert("닉네임을 입력 해주세요!");
+    $("#member_nickname").focus();
+  }else if($('input:radio[name=type_name]').is(':checked')==false){
+    alert("회원 타입을 선택 해주세요!");
+  }
+}
+
+function selectEmail(ele){
+  var $ele = $(ele);
+  var $email_address = $('input[name=email_address]');
+
+  if($ele.val()=="1"){
+    $email_address.attr('readonly', false);
+    $email_address.val(' ');
+  }else{
+    $email_address.attr('readonly', true);
+    $email_address.val($ele.val());
+  }
+}
+</script>
+</head>
+<body>
+
+<h3>회원 등록</h3>
+
+<div class="container">
+  <form>
+    <label>아이디</label>
+    <input type="text" id="member_id" name="member_id" maxlength="20" placeholder="아이디를 입력 해주세요 ( 20자 이내 )">
+    <label>비밀번호</label>
+    <input type="password" id="password1" name="password1" maxlength="20" placeholder="비밀번호를 입력 해주세요 ( 20자 이내 )">
+    <label>비밀번호 확인</label>
+    <input type="password" id="password2" name="password2" maxlength="20" placeholder="비밀번호를 한번더 입력 해주세요 ( 20자 이내 )">
+    <label>이름</label>
+    <input type="text" id="member_name" name="member_name" maxlength="10" placeholder="이름을 입력 해주세요">
+    <label>이메일</label><br>
+    <input type="text" id="email_id" name="email_id" placeholder="이메일 아이디를 입력해주세요">@
+    <input type="text" id="email_address" name="email_address">
+    <select id="email_address_select" name="email_address_select" onchange="selectEmail(this)">
+      <option value="1">직접입력</option>
+      <option value="naver.com">naver.com</option>
+      <option value="google.com">google.com</option>
+      <option value="daum.net">daum.net</option>
+    </select><br>
+    <label>연락처</label>
+    <input type="text" id="member_phone" name="member_phone" maxlength="11" placeholder="핸드폰 번호를 입력 해주세요 ( - 제외 )">
+    <label>닉네임</label>
+    <input type="text" id="member_nickname" name="member_nickname" maxlength="10" placeholder="닉네임을 입력 해주세요 ( 10자 이내 )">
+    <label>타입</label>
+    <input type="radio" id="type_name" name="type_name" value="의사">의사
+    <input type="radio" id="type_name" name="type_name" value="반려인">반려인
+
+    <input type="button" value="로그인">
+    <input type="button" value="회원가입">
+  </form>
+</div>
+
+</body>
+</html>

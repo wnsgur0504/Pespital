@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=button] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=button]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+  $($("input[type='button']")[0]).click(function(){
+    location.href="/diagnosis/list";
+  });
+  $($("input[type='button']")[1]).click(function(){
+    checkValue();
+    // location.href="/board/list";
+  });
+});
+
+function checkValue(){
+  if($("form input[name=dia_title]").val()==""){
+    alert("제목을 입력 해주세요!");
+    $("#dia_title").focus();
+  }else if($("form textarea[name=dia_text]").val()==""){
+    alert("내용을 입력 해주세요!");
+    $("#dia_text").focus();
+  }else if($('input:radio[name=ispublic]').is(':checked')==false){
+    alert("공개여부를 선택 해주세요!");
+  }
+}
+
+</script>
+</head>
+<body>
+
+<h3>진료기록 등록</h3>
+
+<div class="container">
+  <form>
+    <label>제목</label>
+    <input type="text" id="dia_title" name="dia_title" maxlength="20" placeholder="제목을 입력 해주세요 ( 20자 이내 )">
+    <label>내용</label>
+    <textarea id="dia_text" name="dia_text" style="height:200px" maxlength="1000" placeholder="내용을 입력 해주세요 ( 1000자 이내 )"></textarea>
+    <label>사진</label>
+    <!-- <input type="image"> -->
+    <label>공개여부</label>
+    <input type="radio" id="ispublic" name="ispublic" value="0">공개
+    <input type="radio" id="ispublic" name="ispublic" value="1">비공개
+    
+    <input type="button" value="목록으로">
+    <input type="button" value="등록하기">
+  </form>
+</div>
+
+</body>
+</html>
