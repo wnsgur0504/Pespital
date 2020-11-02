@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+</head>
+<body>
+    Petspital
+    <%if(nickname!=""){%>
+        <h3><%=nickname%></h3> 
+        <a href="/member/logout">Logout</a>
+        <a href="/member/myPage">마이페이지</a>
+        <%}else{%>
+            <a href="/member/login">Login</a>
+            <a href="/member/regist">회원가입</a>
+        <%}%>
+        <br>
+    <a href="/disease/list">진단</a>
+    <a href="./map.html">지도</a>
+    <a href="/diagnosis/list">진료기록</a>
+    <a href="/board/list">게시판</a>
+
+</body>
+</html>

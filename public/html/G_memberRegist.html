@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+#email_id, #email_address, #email_address_select {
+  width: 32%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=text], select, textarea, [type=password] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=button] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=button]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  var member_id;
+  var member_nickname;
+  var isIdChecked = false;
+  var isNicknameChecked = false;
+$(function(){
+  $($("input[type='button']")[0]).click(function(){
+    location.href="/member/list";
+  });
+  $($("input[type='button']")[1]).click(function(){
+    if(checkValue()){
+      $("form").attr({
+          "method":"post",
+          "action":"/member/memberRegist"
+        });
+        $("form").submit();
+    }
+    // location.href="/board/list";
+  });
+  $("#bt_idCheck").on("click", function() {
+        // GET 방식으로 서버에 HTTP 요청을 보냄.
+
+        member_id = $("form input[name=member_id]").val();
+        if(!member_id==""){
+          console.log(member_id);
+          $.get("/member/memberRegist/idCheck?member_id="+member_id, function(data, status) {
+            if(data ==0){
+              isIdChecked=true;
+              alert("아이디를 사용가능합니다!");
+            }else{
+              isIdChecked=false;
+              alert("아이디가 중복됩니다!");
+            }
+          });
+        }
+      });
+    $("#bt_nicknameCheck").on("click", function() {
+      // GET 방식으로 서버에 HTTP 요청을 보냄.
+      member_nickname = $("form input[name=member_nickname]").val();
+      if(!member_nickname==""){
+        console.log(member_id);
+        $.get("/member/memberRegist/nicknameCheck?member_nickname="+member_nickname, function(data, status) {
+          if(data ==0){
+            isNicknameChecked=true;
+            alert("닉네임을 사용가능합니다!");
+          }else{
+            isNicknameChecked=false;
+            alert("닉네임이 중복됩니다!");
+          }
+        });
+      }
+    });
+});
+
+function checkValue(){
+  if($("form input[name=member_id]").val()==""){
+    alert("아이디를 입력 해주세요!");
+    $("#member_id").focus();
+    return false;
+  }else if($("form input[name=password1]").val()==""){
+    alert("비밀번호를 입력 해주세요!");
+    $("#password1").focus();
+    return false;
+  }else if($("form input[name=password2]").val()==""){
+    alert("비밀번호 확인을 입력 해주세요!");
+    $("#password2").focus();
+    return false;
+  }else if(($("form input[name=password1]").val())!=($("form input[name=password2]").val())){
+    alert("비밀번호와 확인이 다릅니다!");
+    $("#password1").focus();
+    return false;
+  }else if($("form input[name=member_name]").val()==""){
+    alert("이름을 입력 해주세요!");
+    $("#member_name").focus();
+    return false;
+  }else if($("form input[name=email_id]").val()==""){
+    alert("이메일 아이디를 입력 해주세요!");
+    $("#email_id").focus();
+    return false;
+  }else if($("form input[name=email_address]").val()==""){
+    alert("이메일 주소를 입력 해주세요!");
+    $("#email_address").focus();
+    return false;
+  }else if($("form input[name=member_phone]").val()==""){
+    alert("연락처를 입력 해주세요!");
+    $("#member_phone").focus();
+    return false;
+  }else if($("form input[name=member_nickname]").val()==""){
+    alert("닉네임을 입력 해주세요!");
+    $("#member_nickname").focus();
+    return false;
+  }else if($('input:radio[name=type_name]').is(':checked')==false){
+    alert("회원 타입을 선택 해주세요!");
+    return false;
+  }else if(!isIdChecked){
+    alert("아이디 중복 확인 해주세요!");
+    return false;
+  }else if(!isNicknameChecked){
+    alert("닉네임 중복 확인 해주세요!");
+    return false;
+  }else{
+    return true;
+  }
+}
+
+function selectEmail(ele){
+  var $ele = $(ele);
+  var $email_address = $('input[name=email_address]');
+
+  if($ele.val()=="1"){
+    $email_address.attr('readonly', false);
+    $email_address.val(' ');
+  }else{
+    $email_address.attr('readonly', true);
+    $email_address.val($ele.val());
+  }
+}
+
+
+</script>
+</head>
+<body>
+
+  <h3>회원 등록</h3>
+
+  <div class="container">
+    <form>
+      <label>아이디</label>
+      <input type="text" id="member_id" name="member_id" minlength="4" maxlength="20" placeholder="아이디를 입력 해주세요 ( 20자 이내 )">
+      <button id="bt_idCheck" type="button" >아이디확인</button>
+      <label>비밀번호</label>
+      <input type="password" id="password1" name="password1" minlength="8" maxlength="20" placeholder="비밀번호를 입력 해주세요 ( 20자 이내 )">
+      <label>비밀번호 확인</label>
+      <input type="password" id="password2" name="password2" minlength="8" maxlength="20" placeholder="비밀번호를 한번더 입력 해주세요 ( 20자 이내 )">
+      <label>이름</label>
+      <input type="text" id="member_name" name="member_name" maxlength="10" placeholder="이름을 입력 해주세요">
+      <label>이메일</label><br>
+      <input type="text" id="email_id" name="email_id" placeholder="이메일 아이디를 입력해주세요">@
+      <input type="text" id="email_address" name="email_address">
+      <select id="email_address_select" name="email_address_select" onchange="selectEmail(this)">
+        <option value="1">직접입력</option>
+        <option value="naver.com">naver.com</option>
+        <option value="google.com">google.com</option>
+        <option value="daum.net">daum.net</option>
+      </select><br>
+      <label>연락처</label>
+      <input type="text" id="member_phone" name="member_phone" maxlength="11" placeholder="핸드폰 번호를 입력 해주세요 ( - 제외 )">
+      <label>닉네임</label>
+      <input type="text" id="member_nickname" name="member_nickname" maxlength="10" placeholder="닉네임을 입력 해주세요 ( 10자 이내 )">
+      <button id="bt_nicknameCheck" type="button">닉네임확인</button>
+      <label>타입</label>
+      <input type="radio" id="type_name" name="type_name" value="3">의사
+      <input type="radio" id="type_name" name="type_name" value="2">반려인
+
+      <input type="button" value="목록으로">
+      <input type="button" value="등록하기">
+    </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img{
+    width: 100px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $("button").on("click", function(){
+        location.href="/html/G_memberRegist.html";
+    });
+});
+function checkValue(){
+  
+}
+</script>
+</head>
+<body>
+
+<h2>회원정보</h2>
+<p>회원정보리스트</p>
+
+<table>
+  <tr>
+    <th>아이디</th>
+    <th>비밀번호</th>
+    <th>타입</th>
+    <th>이름</th>
+    <th>이메일</th>
+    <th>연락처</th>
+    <th>닉네임</th>
+    <th>가입날짜</th>
+  </tr>
+  
+  
+  <%for(var i=0;i<memberArray.length;i++){%>
+    <%var member = memberArray[i]%>
+  <tr>
+    <td><a href="/member/detail?member_id=<%=member.member_id%>"><%=member.member_id%></a></td>
+    <td><%=member.password%></td>
+    <td><%=member.type_name%></td>
+    <td><%=member.member_name%></td>
+    <td><%=member.email_id%>@<%=member.email_address%></td>
+    <td><%=member.member_phone%></td>
+    <td><%=member.member_nickname%></td>
+    <td><%=member.regdate%></td>
+  </tr>
+  <%}%>
+
+  <tr>
+      <td colspan="5">
+          <button>글쓰기</button>
+      </td>
+  </tr>
+</table>
+
+</body>
+</html>

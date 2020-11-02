@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img{
+    width: 100px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $("button").on("click", function(){
+        location.href="/html/G_disease.html";
+    });
+});
+function checkValue(){
+  
+}
+</script>
+</head>
+<body>
+
+<h2>질병</h2>
+<p>모든질병</p>
+
+<table>
+  <tr>
+    <th>이름</th>
+    <th>증상</th>
+    <th>예방법</th>
+  </tr>
+  
+  
+  <%for(var i=0;i<diseaseArray.length;i++){%>
+    <%var disease = diseaseArray[i]%>
+  <tr>
+    <input type="hidden" name="disease_id" value="<%=disease.disease_id%>"/>
+    <input type="hidden" name="animal_id" value="<%=animal.disease_id%>"/>
+    <input type="hidden" name="div_id" value="<%=div.disease_id%>"/>
+    <td><a href="/disease/detail?disease_id=<%=disease.disease_id%>"><%=disease.disease_name%></a></td>
+    <td><%=disease.disease_condition%></td>
+    <td><%=disease.disease_preventing%></td>
+  </tr>
+  <%}%>
+
+  <tr>
+      <td colspan="5">
+          <button>글쓰기</button>
+      </td>
+  </tr>
+</table>
+
+</body>
+</html>

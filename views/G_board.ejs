@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img{
+    width: 100px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $("button").on("click", function(){
+        location.href="/board/beforeRegist";
+    });
+});
+function checkValue(){
+  
+}
+</script>
+</head>
+<body>
+
+<h2>게시판</h2>
+<p>자유롭게 글을 작성하세요!</p>
+<%if(nickname!=""){%>
+<h3><%=nickname%></h3> 
+<a href="/member/logout">Logout</a>
+<%}else{%>
+    <a href="/member/login">Login</a>
+<%}%>
+
+<table>
+  <tr>
+    <th>제목</th>
+    <th>작성자</th>
+    <th>작성일</th>
+    <th>조회수</th>
+    <th>좋아요👍</th>
+    <th>싫어요👎</th>
+  </tr>
+  
+  
+  <%for(var i=0;i<boardArray.length;i++){%>
+    <%var board = boardArray[i]%>
+  <tr>
+    <input type="hidden" name="board_id" value="<%=board.board_id%>"/>
+    <!-- <%if(board.img==null){%>
+      <td><img src="/uploads/default.png" alt=""></td>
+    <%}else{%>
+      <td><img src="/uploads/<%=board.img%>" alt="<%=board.img%>"></td>
+    <%}%> -->
+    <td><a href="/board/detail?board_id=<%=board.board_id%>&member_id=<%=id%>"><%=board.board_title%></a></td>
+    <td><%=board.member_id%></td>
+    <td><%=board.regdate%></td>
+    <td><%=board.board_hit%></td>
+    <td><%=board.board_good%></td>
+    <td><%=board.board_bad%></td>
+  </tr>
+  <%}%>
+  <tr>
+    <td>
+      <!-- <%for(var i=1; i<=lastPage; i++){%>
+        <%if(i==currentPage){%>
+          <a href="#"><%=i%></a>
+        <%}else{%>
+          <a href="/board/list?currentPage=<%=i%>"><%=i%></a>
+        <%}%>
+        <%}%>     -->
+        <%if(currentPage>3){%><a href="/board/list?currentPage=<%=currentPage-3%>">[이전]</a><%}%>
+        <%if(currentPage>2){%><a href="/board/list?currentPage=<%=currentPage-2%>"><%=(currentPage-2)%></a><%}%>
+        <%if(currentPage>1){%><a href="/board/list?currentPage=<%=currentPage-1%>"><%=(currentPage-1)%></a><%}%>
+        <%=currentPage%>
+        <%if(currentPage<lastPage){%><a href="/board/list?currentPage=<%=currentPage+1%>"><%=(currentPage+1)%></a><%}%>
+        <%if((currentPage+1)<lastPage){%><a href="/board/list?currentPage=<%=currentPage+2%>"><%=(currentPage+2)%></a><%}%>
+        <%if(currentPage+2<lastPage){%><a href="/board/list?currentPage=<%=currentPage+3%>">[다음]</a><%}%>
+    </td>  
+  </tr>
+  <tr>
+      <td colspan="7">
+          <button>글쓰기</button>
+      </td>
+  </tr>
+</table>
+
+</body>
+</html>

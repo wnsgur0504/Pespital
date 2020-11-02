@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img{
+    width: 100px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $("button").on("click", function(){
+        location.href="/html/G_diagnosisRegist.html";
+    });
+});
+function checkValue(){
+  
+}
+</script>
+</head>
+<body>
+
+<h2>진료기록</h2>
+<p>진료를 기록하세요!</p>
+
+<table>
+  <tr>
+    <th>사진</th>
+    <th>제목</th>
+    <th>반려견이름</th>
+    <th>작성자</th>
+    <th>작성일</th>
+  </tr>
+  
+  
+  <%for(var i=0;i<diagnosisArray.length;i++){%>
+    <%var dia = diagnosisArray[i]%>
+  <tr>
+    <input type="hidden" name="dia_id" value="<%=dia.dia_id%>"/>
+    <input type="hidden" name="member_id" value="<%=dia.member_id%>"/>
+    <input type="hidden" name="pet_id" value="<%=dia.pet_id%>"/>
+    <td><a href="/diagnosis/detail?dia_id=<%=dia.dia_id%>"><%=dia.dia_title%></a></td>
+    <td><%=pet.petname%></td>
+    <td><%=member.member_name%></td>
+    <td><%=dia.regdate%></td>
+  </tr>
+  <%}%>
+
+  <tr>
+      <td colspan="5">
+          <button>글쓰기</button>
+      </td>
+  </tr>
+</table>
+
+</body>
+</html>

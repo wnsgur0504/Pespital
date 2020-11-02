@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img{
+    width: 100px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $("button").on("click", function(){
+        location.href="/html/G_diagnosisRegist.html";
+    });
+});
+function checkValue(){
+  
+}
+</script>
+</head>
+<body>
+
+<h2>애완동물등록</h2>
+<p>반려동물을 등록하세요!</p>
+
+<table>
+  <tr>
+    <th>사진</th>
+    <th>애완동물이름</th>
+
+  </tr>
+  
+  <%if(!petArray){%>
+    <tr>
+      <td>""</td>
+      <td>등록된 애완동물이 없습니다.</td>
+    </tr>
+    <%}else{%>
+      <%for(var i=0;i<petArray.length;i++){%>
+        <%var pet = petArray[i]%>
+      <tr>
+        <input type="hidden" name="pet_id" value="<%=pet.pet_id%>"/>
+        <input type="hidden" name="member_id" value="<%=pet.member_id%>"/>
+        <input type="hidden" name="animal_id" value="<%=pet.animal_id%>"/>
+        <td><%=pet.pet_img%></td>
+        <td><a href="#"><%=pet.pet_name%></a></td>
+        </tr>
+        <%}%>
+     
+    <%}%>
+
+  <tr>
+      <td colspan="5">
+          <button>추가하기</button>
+      </td>
+  </tr>
+</table>
+
+</body>
+</html>

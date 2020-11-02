@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=button] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=button]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $($("input[type='button']")[0]).click(function(){
+        location.href="/board/list";
+    });
+    $($("input[type='button']")[1]).click(function(){
+        if(confirm("수정하시겠어요?")){
+        $("form").attr({
+          "method":"post",
+          "action":"/board/edit"
+        });
+        $("form").submit();
+        }
+    });
+    $($("input[type='button']")[2]).click(function(){
+      if(confirm("삭제하시겠어요?")){
+        $("form").attr({
+          "method":"post",
+          "action":"/board/delete"
+        });
+        $("form").submit();
+        }
+    });
+    $("#bt_good").on("click", function() {
+        // GET 방식으로 서버에 HTTP 요청을 보냄.
+        var board_id = $("form input[name=board_id]").val();
+        var member_id = $("form input[name=member_id]").val();
+          $.get("/board/good?board_id="+board_id+"&member_id="+member_id, function(data, status) {
+            
+      });
+      $("#bt_good").remove();
+      $("#bt_bad").remove();
+    });
+    $("#bt_bad").on("click", function() {
+        // GET 방식으로 서버에 HTTP 요청을 보냄.
+        var board_id = $("form input[name=board_id]").val();
+        var member_id = $("form input[name=member_id]").val();
+          $.get("/board/bad?board_id="+board_id+"&member_id="+member_id, function(data, status) {
+            
+      });
+      $("#bt_good").remove();
+      $("#bt_bad").remove();
+    });
+  });
+function checkValue(){
+  if($("form input[name=]").val()==""){
+
+  }else if($("form input[]").val()==""){
+
+  }else{
+    
+  }
+}
+
+</script>
+</head>
+<body>
+
+<h3>게시글 보기</h3>
+
+
+<div class="container">
+  <!--  enctype="multipart/form-data" -->
+  <form>
+    <%if(id==board.member_id){ %>
+    <input type="hidden" name="member_id" value="<%=id%>" />
+    <input type="hidden" name="board_id" value="<%=board.board_id%>" />
+    <label>제목</label>
+    <input type="text" name="board_title" value="<%=board.board_title%>">
+    <label>작성자</label>
+    <input type="text" name="member_id" value="<%=board.member_id%>"readonly>
+    <label>작성일</label>
+    <input type="text" name="regdate" value="<%=board.regdate%>"readonly>
+    <label>조회수</label>
+    <input type="text" name="board_hit" value="<%=board.board_hit%>"readonly>
+    <label>좋아요👍</label>
+    <input type="text" name="board_good" value="<%=board.board_good%>"readonly>
+    <label>싫어요👎</label>
+    <input type="text" name="board_bad" value="<%=board.board_bad%>"readonly>
+    <%if(isRecomed.cnt==0){%>
+    <button id="bt_good" type="button">좋아요</button>
+    <button id="bt_bad"  type="button">싫어요</button>
+    <%}%>
+    <label>내용</label>
+    <textarea name="board_text" cols="30" rows="10"><%=board.board_text%></textarea>
+    <label>사진</label>
+      <%for(var i=0;i<imgArray.length;i++){%>
+        <%var img = imgArray[i]%>
+        <a href="/uploads/<%=img.img%>" download><%=img.img%></a> <br> 
+      <%}%>
+    <input type="button" value="목록으로">
+      <input type="button" value="수정하기">
+      <input type="button" value="삭제하기">
+    <%}else{%>
+      <input type="hidden" name="member_id" value="<%=id%>" readonly/>
+    <input type="hidden" name="board_id" value="<%=board.board_id%>" readonly/>
+    <label>제목</label>
+    <input type="text" name="board_title" value="<%=board.board_title%>"readonly/>
+    <label>작성자</label>
+    <input type="text" name="member_id" value="<%=board.member_id%>"readonly/>
+    <label>작성일</label>
+    <input type="text" name="regdate" value="<%=board.regdate%>"readonly/>
+    <label>조회수</label>
+    <input type="text" name="board_hit" value="<%=board.board_hit%>"readonly/>
+    <label>좋아요👍</label>
+    <input type="text" name="board_good" value="<%=board.board_good%>"readonly/>
+    <label>싫어요👎</label>
+    <input type="text" name="board_bad" value="<%=board.board_bad%>"readonly/>
+    <%if(isRecomed.cnt==0){%>
+    <button id="bt_good" type="button">좋아요</button>
+    <button id="bt_bad"  type="button">싫어요</button>
+    <%}%>
+    <label>내용</label>
+    <textarea name="board_text" cols="30" rows="10" readonly><%=board.board_text%></textarea>
+    <%for(var i=0;i<imgArray.length;i++){%>
+      <%var image = imgArray[i]%>
+      <a href="/uploads/<%=image.img%>" download><%=image.img%></a> <br> 
+    <%}%>
+    <input type="button" value="목록으로">
+    <%}%>
+
+  </form>
+</div>
+
+</body>
+</html>
