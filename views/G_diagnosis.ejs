@@ -1,61 +1,121 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-<style type='text/css'>
-@import url("bootstrap.css");
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$(function(){
-    $("button").on("click", function(){
-        location.href="/html/G_diagnosisRegist.html";
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+    integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+    crossorigin="anonymous"></script>
+  <style type='text/css'>
+    @import url("bootstrap.css");
+
+    .btn-outline-primary {
+      color: #e95420;
+      border-color: #e95420;
+    }
+
+    .btn-outline-primary:hover {
+      color: #fff;
+      background-color: #e95420;
+      border-color: #e95420;
+    }
+
+    .btn-outline-primary:focus,
+    .btn-outline-primary.focus {
+      box-shadow: 0 0 0 0.2rem rgba(233, 84, 32, 0.5);
+    }
+
+    .btn-outline-primary.disabled,
+    .btn-outline-primary:disabled {
+      color: #e95420;
+      background-color: transparent;
+    }
+
+    .btn-outline-primary:not(:disabled):not(.disabled):active,
+    .btn-outline-primary:not(:disabled):not(.disabled).active,
+    .show>.btn-outline-primary.dropdown-toggle {
+      color: #fff;
+      background-color: #e95420;
+      border-color: #e95420;
+    }
+
+    .btn-outline-primary:not(:disabled):not(.disabled):active:focus,
+    .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
+    .show>.btn-outline-primary.dropdown-toggle:focus {
+      box-shadow: 0 0 0 0.2rem rgba(233, 84, 32, 0.5);
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(function () {
+      $("button").on("click", function () {
+        location.href = "/html/G_diagnosisRegist.html";
+      });
     });
-});
-function checkValue(){
-  
-}
-</script>
+    function checkValue() {
+
+    }
+  </script>
 </head>
+
 <body>
-
   <h1 style="color:tomato; text-align:center">PETSPITAL</h1>
-
-  <table class="table table-hover">
-    <thead>
-  <tr>
-    <th>사진</th>
-    <th>제목</th>
-    <th>반려견이름</th>
-    <th>작성자</th>
-    <th>작성일</th>
-  </tr>
-</thead>
-  
-  <tbody>
-  <%for(var i=0;i<diagnosisArray.length;i++){%>
-    <%var dia = diagnosisArray[i]%>
-    <tr class="table-info">
-    <input type="hidden" name="dia_id" value="<%=dia.dia_id%>"/>
-    <input type="hidden" name="member_id" value="<%=dia.member_id%>"/>
-    <input type="hidden" name="pet_id" value="<%=dia.pet_id%>"/>
-    <th scope="row"><a href="/diagnosis/detail?dia_id=<%=dia.dia_id%>"><%=dia.dia_title%></a></th>
-    <td><%=pet.petname%></td>
-    <td><%=member.member_name%></td>
-    <td><%=dia.regdate%></td>
-  </tr>
-  <%}%>
+  <form action="">
+    <input type="search" name="query" placeholder="검색어" />
+    <span><button>검색</button></span>
+  </form>
+  <div class="container">
+    <table class="table table-hover m-md-auto" style="border-collapse: collapse; border-radius: 1em; overflow: hidden;">
+      <tbody>
+        <%for(var i=0;i<diagnosisArray.length;i++){%>
+        <%var dia = diagnosisArray[i]%>
+        <input type="hidden" name="dia_id" value="<%=dia.dia_id%>" />
+        <input type="hidden" name="member_id" value="<%=dia.member_id%>" />
+        <input type="hidden" name="pet_id" value="<%=dia.pet_id%>" />
+        <tr class="table-info">
+          <td rowspan="2" style="text-align: center; vertical-align: middle;">petImage</td>
+          <td colspan="3" style="vertical-align: middle;"><a
+              href="/diagnosis/detail?dia_id=<%=dia.dia_id%>"><%=dia.dia_title%></a></td>
+        </tr>
+        <tr class="table-info">
+          <td style="text-align: center; vertical-align: middle;"><%=dia.petname%></td>
+          <td style="text-align: center; vertical-align: middle;"><%=dia.member_nickname%></td>
+          <td style="text-align: center; vertical-align: middle;"><%=dia.regdate%></td>
+        </tr>
+        <%}%>
 </tbody>
-  <tr>
-      <td colspan="5">
-        <button type="button" class="btn btn-outline-primary">글쓰기</button>
-      </td>
-  </tr>
 </table>
+</div>
 
+<%if(startPage>1){%>
+        <a href="/diagnosis/list?currentPage=1">
+          <<< /a>
+            <%}%>
+<%if(currentPage>1){%>
+            <a href="/diagnosis/list?currentPage=<%=currentPage-1%>&query=<%=query%>&sort=<%=sort%>">
+              << /a>
+                <%}%>
+<%for(var i=startPage; i<=endPage;i++){%>
+                <%if(i==currentPage){%>
+                <%=i%>
+                <%}else{%>
+                <a href="/diagnosis/list?currentPage=<%=i%>&query=<%=query%>&sort=<%=sort%>"><%=i%></a>
+                <%}%>
+<%}%>
+                <%if(currentPage<totalPage){%>
+                <a href="/diagnosis/list?currentPage=<%=currentPage+1%>&query=<%=query%>&sort=<%=sort%>">></a>
+                <%}%>
+<%if(endPage<totalPage){%>
+                <a href="/diagnosis/list?currentPage=<%=totalPage%>&query=<%=query%>&sort=<%=sort%>">>></a>
+                <%}%>
+  <button type="button" class="btn btn-outline-primary">글쓰기</button>
 </body>
 </html>

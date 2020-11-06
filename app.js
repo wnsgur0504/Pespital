@@ -8,6 +8,7 @@ var express = require('express')
   , routes = require('./routes/index')
   , board = require('./routes/board')
   , member = require('./routes/member')
+  , diagnosis = require('./routes/diagnosis')
   , http = require('http')
   , path = require('path')
   , session = require('express-session')
@@ -60,6 +61,7 @@ app.use(session({
 app.use('/', routes);
 app.use('/board', board);
 app.use('/member', member);
+app.use('/diagnosis', diagnosis);
   
 // 서버 실행
 http.createServer(app).listen(port, function(){

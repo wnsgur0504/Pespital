@@ -79,14 +79,14 @@ function checkValue(){
 <div class="container">
   <form>
     <input type="hidden" name="dia_id" value="<%=diagnosis.dia_id%>"/>
-    <input type="hidden" name="member_id" value="<%=member.member_id%>"/>
-    <input type="hidden" name="pet_id" value="<%=pet.pet_id%>"/>
+    <input type="hidden" name="member_id" value="<%=diagnosis.member_id%>"/>
+    <input type="hidden" name="pet_id" value="<%=diagnosis.pet_id%>"/>
     <label>제목</label>
     <input type="text" name="dia_title" value="<%=diagnosis.dia_title%>">
     <label>반려견이름</label>
-    <input type="text" name="pet_name" value="<%=pet.pet_name%>">
+    <input type="text" name="pet_name" value="<%=diagnosis.pet_name%>">
     <label>작성자</label>
-    <input type="text" name="member_name" value="<%=member.member_name%>">
+    <input type="text" name="member_nickname" value="<%=diagnosis.member_nickname%>">
     <label>작성일</label>
     <input type="text" name="regdate" value="<%=diagnosis.regdate%>">
     <label>내용</label>

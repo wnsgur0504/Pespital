@@ -1668,17 +1668,21 @@ pre code {
 }
 
 .table {
-  width: 100%;
+  width: 40%;
   margin-bottom: 1rem;
   color: #333;
+  border-collapse: collapse;
+  border-radius: 1em;
+  overflow: hidden;
 }
 
 .table th,
 .table td {
   padding: 0.75rem;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }
+
 
 .table thead th {
   vertical-align: bottom;
