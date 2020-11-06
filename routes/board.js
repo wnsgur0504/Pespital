@@ -181,20 +181,35 @@ router.get("/detail", function (req, res, next) {
     if (req.session.displayName) {
         var board_id = req.query.board_id;
         var member_id = req.query.member_id;
-        var sql = "select * from board left join member on board.member_id=member.member_id where board_id=" + board_id + ";";
+        var sql ="select board_reply.reply_id, board_reply.board_id, board_reply.member_id, member.member_nickname, board_reply.reply_text, board_reply.regdate from board_reply left join member on board_reply.member_id = member.member_id where board_id=?";
+        var replyArray;
+        
+        con.query(sql, [board_id], function(error, record){
+            if(error){
+                console.log("게시판 댓글 조회 에러", error);
+            }else{
+                replyArray=record;
+                console.log(replyArray);
+            }
+        });
+        var sql = "select member.member_id, board.board_id, board.board_title, member.member_nickname, board.regdate, board.board_hit, board.board_good, board.board_bad, board.board_text from board left join member on board.member_id=member.member_id where board_id=" + board_id + ";";
         sql += "update board set board_hit = board_hit+1 where board_id=" + board_id + ";";
         sql += "select count(member_id) as cnt from board_recom where board_id=" + board_id + " and member_id='" + member_id + "';";
         sql += "select * from board_img where board_id=" + board_id + ";";
         con.query(sql, function (error, record, fields) {
-
+            var nickname = req.session.displayName;
+            var id = req.session.displayID;
             if (error) {
                 console.log("게시판 글 조회 에러", error);
             } else {
+                console.log(record[0][0]);
                 res.render("G_boardDetail", {
                     "board": record[0][0],
-                    "id": req.session.displayID,
+                    "id": id,
+                    "nickname":nickname,
                     "isRecomed": record[2][0],
-                    "imgArray": record[3]
+                    "imgArray": record[3],
+                    "replyArray":replyArray
                 });
             }
         });
@@ -258,6 +273,20 @@ router.get("/bad", function (req, res) {
             console.log("좋아요 수 에러", error);
         }
     })
+});
+
+router.post("/reply", function(req, res){
+    var board_id = req.body.board_id;
+    var member_id = req.body.member_id;
+    var reply = req.body.reply;
+    var sql = "insert into board_reply(board_id, member_id, reply_text) values(?, ?, ?)";
+    con.query(sql, [parseInt(board_id), member_id, reply], function(error){
+        if(error){
+            console.log("게시판 댓글 등록 에러", error);
+        }else{
+            res.send("성공");
+        }
+    });
 });
 
 

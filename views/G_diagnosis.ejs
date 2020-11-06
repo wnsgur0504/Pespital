@@ -96,12 +96,10 @@
 </div>
 
 <%if(startPage>1){%>
-        <a href="/diagnosis/list?currentPage=1">
-          <<< /a>
+        <a href="/diagnosis/list?currentPage=1"><<</a>
             <%}%>
 <%if(currentPage>1){%>
-            <a href="/diagnosis/list?currentPage=<%=currentPage-1%>&query=<%=query%>&sort=<%=sort%>">
-              << /a>
+            <a href="/diagnosis/list?currentPage=<%=currentPage-1%>&query=<%=query%>&sort=<%=sort%>"><</a>
                 <%}%>
 <%for(var i=startPage; i<=endPage;i++){%>
                 <%if(i==currentPage){%>

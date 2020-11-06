@@ -72,9 +72,7 @@
         // GET 방식으로 서버에 HTTP 요청을 보냄.
         var board_id = $("form input[name=board_id]").val();
         var member_id = $("form input[name=member_id]").val();
-        $.get("/board/good?board_id=" + board_id + "&member_id=" + member_id, function (data, status) {
-
-        });
+        $.get("/board/good?board_id=" + board_id + "&member_id=" + member_id, function (data, status) {});
         $("#bt_good").remove();
         $("#bt_bad").remove();
       });
@@ -82,11 +80,27 @@
         // GET 방식으로 서버에 HTTP 요청을 보냄.
         var board_id = $("form input[name=board_id]").val();
         var member_id = $("form input[name=member_id]").val();
-        $.get("/board/bad?board_id=" + board_id + "&member_id=" + member_id, function (data, status) {
-
-        });
+        $.get("/board/bad?board_id=" + board_id + "&member_id=" + member_id, function (data, status) {});
         $("#bt_good").remove();
         $("#bt_bad").remove();
+      });
+      $("#bt_reply").on("click", function(){
+        var reply = $("input[name='board_reply']").val();
+        var member_id =  $("form input[name=member_id]").val();
+        var board_id =  $("form input[name=board_id]").val();
+        var nickname = $("form input[name='member_nickname']").val();
+        if(reply.length>2){
+          $.post("/board/reply", {
+            "board_id":board_id
+            , "member_id":member_id
+            , "reply":reply}, function(data, staus){
+              var text = nickname+"(방금):  "+reply;
+              $("input[name='board_reply']").val("");
+              $("<li>"+text+"</li>").appendTo($("ul"));
+            }); 
+        }else{
+          alert("댓글은 2글자 이상 써주세요");
+        }
       });
     });
     function checkValue() {
@@ -111,8 +125,9 @@
     <!--  enctype="multipart/form-data" -->
     <form>
       <%if(id==board.member_id){ %>
-      <input type="hidden" name="member_id" value="<%=id%>"/>
-      <input type="hidden" name="board_id" value="<%=board.board_id%>" />
+      <input type="hidden" name="member_id" value="<%=id%>" readonly/>
+      <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly/>
+      <input type="hidden" name="board_id" value="<%=board.board_id%>"readonly />
       <label>제목</label>
       <input type="text" name="board_title" value="<%=board.board_title%>">
       <label>작성자</label>
@@ -140,12 +155,13 @@
       <input type="button" value="수정하기">
       <input type="button" value="삭제하기">
     <%}else{%>
-      <input type="hidden" name="member_id" value="<%=id%>" readonly />
+      <input type="hidden" name="member_id" value="<%=id%>" readonly/>
+      <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly/>
       <input type="hidden" name="board_id" value="<%=board.board_id%>" readonly />
       <label>제목</label>
       <input type="text" name="board_title" value="<%=board.board_title%>" readonly />
       <label>작성자</label>
-      <input type="text" name="member_id" value="<%=board.member_id%>" readonly />
+      <input type="text" name="member_id" value="<%=board.member_nickname%>" readonly />
       <label>작성일</label>
       <input type="text" name="regdate" value="<%=board.regdate%>" readonly />
       <label>조회수</label>
@@ -167,9 +183,17 @@
       <%}%>
     <input type="button" value="목록으로">
     <%}%>
-
     </form>
   </div>
+  <hr>
+  <ul>
+    <%for(var i=0;i<replyArray.length;i++){%>
+      <%var reply=replyArray[i]%>
+      <li><%=reply.member_nickname%>(<%=reply.regdate%>) : <%=reply.reply_text%></li>
+    <%}%>
+  </ul> 
+  <input type="text" id="board_reply" name="board_reply" value=""/><button type="button" id="bt_reply">댓글등록</button>
+    
 
 </body>
 
