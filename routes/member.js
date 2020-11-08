@@ -169,7 +169,7 @@ router.post("/forgot_password", function(req, res){
                     service: 'gmail',
                     auth: {
                       user: 'cjh960504@gmail.com',  // gmail 계정 아이디를 입력
-                      pass: 'chlwnsgur2wl@'          // gmail 계정의 비밀번호를 입력
+                      pass: ""        // gmail 계정의 비밀번호를 입력
                     }
                 });
                 let mailOptions = {
