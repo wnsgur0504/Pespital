@@ -3,12 +3,12 @@ var mysql = require("mysql");
 var fs = require("fs");
 var router = express.Router();
 var bodyParser = require('body-parser');
-var multer = require('multer'); // express에 multer모듈 적용 (for 파일업로드)
 const { start } = require("repl");
 var fileArray = [];
+var multer = require('multer'); // express에 multer모듈 적용 (for 파일업로드)
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/')
+        cb(null, 'uploads/board/');
 
     },
     filename: function (req, file, cb) {
@@ -86,11 +86,13 @@ router.get("/list", function (req, res, next) {
 
     if (query) {
         query = req.query.query;
-        sql = "select board.board_id, board.board_title, board.regdate, board.board_good, board.board_hit, member.member_nickname from board left join member on board.member_id=member.member_id where board_title like '%" + query + "%' OR board_title like '%" + query + "%' order by " + sort + " desc limit ?,?";
+        sql = "select board.board_id, board.board_title, board.regdate, board.board_good, board.board_hit, member.member_nickname,  (select count(*) from board_reply where board.board_id = board_reply.board_id) as cnt from board left join member on board.member_id=member.member_id where board_title like '%" + query + "%' OR board_title like '%" + query + "%' order by " + sort + " desc limit ?,?";
+        // sql += "select count(*) from board_reply";
         console.log("검색어 있을때");
     } else {
         query = "";
-        sql = "select board.board_id, board.board_title, board.regdate, board.board_good, board.board_hit, member.member_nickname from board left join member on board.member_id=member.member_id order by " + sort + " desc limit ?,?";
+        sql = "select board.board_id, board.board_title, board.regdate, board.board_good, board.board_hit, member.member_nickname,  (select count(*) from board_reply where board.board_id = board_reply.board_id) as cnt from board left join member on board.member_id=member.member_id order by " + sort + " desc limit ?,?";
+        // sql += "select count(*) from board_reply where board_id="+board_id;
         console.log("검색어 없을때");
     }
 
@@ -98,7 +100,7 @@ router.get("/list", function (req, res, next) {
         if (error) {
             console.log("게시판 글 목록 조회 에러", error);
         } else {
-            // console.log(record);
+            console.log(record);
             // console.log(record[0]);
             // console.log(lastPage);
             if (req.session.displayID) {

@@ -1,128 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #f1f1f1;}
 
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
+  <title>PETSPITAL 로그인</title>
 
-button:hover {
-  opacity: 0.8;
-}
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: dodgerblue;
-}
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-}
-
-img.avatar {
-  width: 40%;
-  border-radius: 50%;
-}
-
-.container {
-  padding: 16px;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100%;
-  }
-}
-
-#wrapper{
-    width:800px;
-    height:1000px;
-    margin: auto;
-}
-
-h2 {
-    text-align: center;
-}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(function(){
-    $($("button[type='button']")[0]).click(function(){
-      $("form").attr({
-          "method":"post",
-          "action":"/member/login"
-        });
-        $("form").submit();
+
+    $($("#login")).click(function(){
+      if(checkValue()){
+        $("form").attr({
+            "method":"post",
+            "action":"/member/login"
+          });
+          $("form").submit();  
+      }else{
+        alert("아이디 비밀번호를 입력해주세요");
+      }
     });
     $($("button[type='button']")[1]).click(function(){
         location.href="./searchMain.html";
     });
-    $($("button[type='button']")[2]).click(function(){
+    $($("#regist")).click(function(){
         location.href="/html/G_memberRegist.html";
     });
 });
 function checkValue(){
-  if($("form input[name=]").val()==""){
-
-  }else if($("form input[]").val()==""){
-
+  if($("form input[name='id']").val()==""){
+    return false;
+  }else if($("form input[name='password']").val()==""){
+    return false;
   }else{
-    
+    return true;
   }
 }
 </script>
+
 </head>
-<body>
-<div id="wrapper">
-<h2>로그인</h2>
 
+<body class="bg-gradient-primary">
 
-<form>
   <div class="container">
-    <label for="id"><b>아이디</b></label>
-    <input type="text" id="id" name="id" required>
-    <label for="password"><b>비밀번호</b></label>
-    <input type="password" id="password" name="pwd" required>
-    <button type="button">로그인</button>
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-10 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">PETSPITAL</h1>
+                  </div>
+                  <form class="user">
+                    <div class="form-group">
+                      <input type="text" name="id" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="아이디">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="비밀번호">
+                    </div>
+                    <a  id="login" class="btn btn-primary btn-user btn-block">
+                      로그인
+                    </a>
+                  </form>
+                  <hr>
+                  <div class="text-center">
+                    <a class="small" href="/html/forgot_id.html">아이디를 잊으셨나요?</a>
+                  </div>
+                  <div class="text-center">
+                    <a class="small" href="/html/forgot_password.html">비밀번호를 잊으셨나요?</a>
+                  </div>
+                  <div class="text-center">
+                    <a class="small" id="regist">지금 바로 회원가입 하세요!</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn">아이디/비번찾기</button>
-    <button type="button" class="cancelbtn">회원가입</button>
-  </div>
-</form>
-</div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>

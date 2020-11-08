@@ -4,10 +4,11 @@ var fs = require("fs");
 var router = express.Router();
 var bodyParser = require('body-parser');
 var multer = require('multer'); // express에 multer모듈 적용 (for 파일업로드)
+// const { compile } = require("sizzle");
 var fileArray=[];
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+    cb(null, 'uploads/diagnosis/')
     
     },
     filename: function (req, file, cb) {
@@ -109,7 +110,7 @@ router.get("/list", function(req, res){
                 res.render("G_diagnosis",  {
                             "diagnosisArray":record,
                             // "id":id,
-                            // "nickname":nickname,
+                            "nickname":nickname,
                             "startPage":startPage,
                             "endPage":endPage,
                             "currentPage":currentPage,
@@ -121,7 +122,7 @@ router.get("/list", function(req, res){
                 res.render("G_diagnosis",  {
                             "diagnosisArray":record,
                             // "id":"",
-                            // "nickname":"",
+                            "nickname":"",
                             "startPage":startPage,
                             "endPage":endPage,
                             "currentPage":currentPage,
@@ -134,20 +135,24 @@ router.get("/list", function(req, res){
     });
 });
 
-router.get('/detail', function(req, res){
+router.get('/detail',function(req, res){
     var dia_id = req.query.dia_id;
     if(req.session.displayName){
-    var sql="select diagnosis.dia_id, diagnosis.member_id, diagnosis.pet_id, diagnosis.dia_title, diagnosis.dia_text,diagnosis.regdate, pet.pet_name, member.member_nickname ";
-    sql += "from diagnosis left join member on diagnosis.member_id=member.member_id  left join pet on diagnosis.pet_id = pet.pet_id where dia_id=?";
-        con.query(sql, [dia_id],function(error, record, fields){
+        // 이미지가져오는쿼리 필요
+    var sql="select diagnosis.dia_id, diagnosis.member_id, diagnosis.pet_id, diagnosis.dia_title, diagnosis.dia_text,diagnosis.regdate, diagnosis.ispublic ,pet.pet_name, member.member_nickname ";
+    sql += "from diagnosis left join member on diagnosis.member_id=member.member_id  left join pet on diagnosis.pet_id = pet.pet_id where dia_id=?;";
+    sql += "select * from diagnosis_img where dia_id=?";
+        con.query(sql, [dia_id, dia_id],function(error, record, fields){
             if(error){
                 console.log("게시판 글 조회 에러", error);
             }else{
+                console.log(record[0][0]);
+                console.log(record[1].length);
                 res.render("G_diagnosisDetail", {
-                "diagnosis":record[0], 
-                "id":req.session.displayID
+                "diagnosis":record[0][0], 
+                "id":req.session.displayID,
                 // "isRecomed":record[2][0],
-                // "imgArray":record[3]
+                "imgArray":record[1]
             });
             }
         });
@@ -155,5 +160,81 @@ router.get('/detail', function(req, res){
         res.redirect('/member/login');
     }
     
+});
+
+router.get("/beforeRegist", function(req, res){
+    if (req.session.displayName) {
+        res.redirect("/html/G_diagnosisRegist.html");
+    } else {
+        res.redirect("/member/login");
+    }
+});
+router.post("/regist", upload.array("images"), function(req, res){
+    if(req.session.displayID){
+        var dia_title=req.body.dia_title;
+        var dia_text=req.body.dia_text;
+        var pet_id=req.body.myPet;
+        var isPublic=req.body.ispublic;
+        console.log(req.body);
+        var sql ="insert into diagnosis(member_id, pet_id, dia_title, dia_text, ispublic) values(?, ?, ?, ?, ?);";
+        for (var i = 0; i < fileArray.length; i++) {
+            sql += "insert into diagnosis_img(dia_id, img) values (LAST_INSERT_ID(), '" + fileArray[i] + "');";
+        }
+        con.query(sql, [req.session.displayID, pet_id, dia_title, dia_text, isPublic], function(error){
+            if(error){
+                console.log("진료기록 삽입 에러", error);
+            }else{
+                res.redirect("/diagnosis/list");
+            }
+        });
+    }else{
+        res.redirect("/member/login");
+    }
+});
+
+router.get("/checkPet", function(req,res){
+    var id = req.session.displayID;
+    var sql ="select * from pet where member_id=?";
+    con.query(sql, [id], function(error, record){
+        if(error){
+            console.log("애완동물 조회 에러", error);
+        }else{
+            res.send(record);
+        }
+    });
+});
+
+router.post("/edit", function(req, res){
+    console.log(req.body);
+    var dia_id=req.body.dia_id;
+    var dia_title=req.body.dia_title;
+    var dia_text=req.body.dia_text;
+    var ispublic =req.body.ispublic;
+    
+    var sql = "update diagnosis set dia_title=?, dia_text=?, ispublic=? where dia_id=?";
+    console.log(sql);
+
+    con.query(sql, [dia_title, dia_text, ispublic,dia_id], function(error){
+        if(error){
+            console.log("진료기록 수정 에러");
+            res.redirect("/diagnosis/list");
+        }else{
+            res.redirect("/diagnosis/detail?dia_id="+dia_id);
+        }
+    });
+});
+
+router.post("/delete", function(req, res){
+    console.log(req.body);
+    var dia_id = req.body.dia_id;
+    var sql="delete from diagnosis where dia_id=?";
+    con.query(sql, [dia_id], function(error){
+        if(error){
+            console.log("진료기록 삭제 에러");
+            res.redirect("/diagnosis/detail?dia_id="+dia_id);
+        }else{
+            res.redirect("/diagnosis/list");
+        }
+    }); 
 });
 module.exports = router;

@@ -46,10 +46,17 @@ var sessionStore = new MySQLStore(options);
 
 app.set('views', './views'); // New!! 
 app.set('view engine', 'ejs'); // New!!
-app.use('/uploads', express.static(__dirname + '/uploads'));
+// app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/uploads/board', express.static(__dirname + '/uploads/board'));
+app.use('/uploads/diagnosis', express.static(__dirname + '/uploads/diagnosis'));
 app.use('/html', express.static(__dirname + '/public/html'));
+app.use('/js', express.static(__dirname + '/public/js'));
+app.use('/css', express.static(__dirname + '/public/css'));
+app.use('/scss', express.static(__dirname + '/public/scss'));
+app.use('/img', express.static(__dirname + '/public/img'));
+app.use('/vendor', express.static(__dirname + '/public/vendor'));
+app.use(express.urlencoded( {extended : false } )); 
 app.use(express.json());
-app.use(express.urlencoded( {extended : false } ));
 app.use(session({
     secret:'ASDASDAS321321B1@'
     ,store:sessionStore

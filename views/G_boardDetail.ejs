@@ -1,56 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-    }
 
-    * {
-      box-sizing: border-box;
-    }
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    input[type=text],
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      margin-top: 6px;
-      margin-bottom: 16px;
-      resize: vertical;
-    }
+  <title>PETSPITAL 게시판 글보기</title>
 
-    input[type=button] {
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    input[type=button]:hover {
-      background-color: #45a049;
-    }
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-    .container {
-      border-radius: 5px;
-      background-color: #f2f2f2;
-      padding: 20px;
-    }
-  </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     $(function () {
-      $($("input[type='button']")[0]).click(function () {
-        location.href = "/board/list";
-      });
-      $($("input[type='button']")[1]).click(function () {
+      $("#edit").click(function () {
         if (confirm("수정하시겠어요?")) {
           $("form").attr({
             "method": "post",
@@ -59,7 +30,7 @@
           $("form").submit();
         }
       });
-      $($("input[type='button']")[2]).click(function () {
+      $("#del").click(function () {
         if (confirm("삭제하시겠어요?")) {
           $("form").attr({
             "method": "post",
@@ -72,7 +43,7 @@
         // GET 방식으로 서버에 HTTP 요청을 보냄.
         var board_id = $("form input[name=board_id]").val();
         var member_id = $("form input[name=member_id]").val();
-        $.get("/board/good?board_id=" + board_id + "&member_id=" + member_id, function (data, status) {});
+        $.get("/board/good?board_id=" + board_id + "&member_id=" + member_id, function (data, status) { });
         $("#bt_good").remove();
         $("#bt_bad").remove();
       });
@@ -80,25 +51,26 @@
         // GET 방식으로 서버에 HTTP 요청을 보냄.
         var board_id = $("form input[name=board_id]").val();
         var member_id = $("form input[name=member_id]").val();
-        $.get("/board/bad?board_id=" + board_id + "&member_id=" + member_id, function (data, status) {});
+        $.get("/board/bad?board_id=" + board_id + "&member_id=" + member_id, function (data, status) { });
         $("#bt_good").remove();
         $("#bt_bad").remove();
       });
-      $("#bt_reply").on("click", function(){
+      $("#bt_reply").on("click", function () {
         var reply = $("input[name='board_reply']").val();
-        var member_id =  $("form input[name=member_id]").val();
-        var board_id =  $("form input[name=board_id]").val();
+        var member_id = $("form input[name=member_id]").val();
+        var board_id = $("form input[name=board_id]").val();
         var nickname = $("form input[name='member_nickname']").val();
-        if(reply.length>2){
+        if (reply.length > 2) {
           $.post("/board/reply", {
-            "board_id":board_id
-            , "member_id":member_id
-            , "reply":reply}, function(data, staus){
-              var text = nickname+"(방금):  "+reply;
-              $("input[name='board_reply']").val("");
-              $("<li>"+text+"</li>").appendTo($("ul"));
-            }); 
-        }else{
+            "board_id": board_id
+            , "member_id": member_id
+            , "reply": reply
+          }, function (data, staus) {
+            var text = nickname + "(방금):  " + reply;
+            $("input[name='board_reply']").val("");
+            $("<li>" + text + "</li>").appendTo($("ul"));
+          });
+        } else {
           alert("댓글은 2글자 이상 써주세요");
         }
       });
@@ -114,86 +86,205 @@
     }
 
   </script>
+  <style>
+    img {
+      max-width: 100%;
+      height: auto !important;
+    }
+
+    ul {
+      list-style: none;
+    }
+  </style>
+
 </head>
 
-<body>
-
-  <h3>게시글 보기</h3>
-
+<body class="bg-gradient-primary">
 
   <div class="container">
-    <!--  enctype="multipart/form-data" -->
-    <form>
-      <%if(id==board.member_id){ %>
-      <input type="hidden" name="member_id" value="<%=id%>" readonly/>
-      <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly/>
-      <input type="hidden" name="board_id" value="<%=board.board_id%>"readonly />
-      <label>제목</label>
-      <input type="text" name="board_title" value="<%=board.board_title%>">
-      <label>작성자</label>
-      <input type="text" name="member_id" value="<%=board.member_nickname%>" readonly>
-      <label>작성일</label>
-      <input type="text" name="regdate" value="<%=board.regdate%>" readonly>
-      <label>조회수</label>
-      <input type="text" name="board_hit" value="<%=board.board_hit%>" readonly>
-      <label>좋아요👍</label>
-      <input type="text" name="board_good" value="<%=board.board_good%>" readonly>
-      <label>싫어요👎</label>
-      <input type="text" name="board_bad" value="<%=board.board_bad%>" readonly>
-      <%if(isRecomed.cnt==0){%>
-      <button id="bt_good" type="button">좋아요</button>
-      <button id="bt_bad" type="button">싫어요</button>
-      <%}%>
-    <label>내용</label>
-    <textarea name="board_text" cols="30" rows="10"><%=board.board_text%></textarea>
-      <label>사진</label>
-      <%for(var i=0;i<imgArray.length;i++){%>
-        <%var image = imgArray[i]%>
-      <img src="/uploads/<%=image.img%>" alt="<%=image.img%>">
-      <%}%>
-    <input type="button" value="목록으로">
-      <input type="button" value="수정하기">
-      <input type="button" value="삭제하기">
-    <%}else{%>
-      <input type="hidden" name="member_id" value="<%=id%>" readonly/>
-      <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly/>
-      <input type="hidden" name="board_id" value="<%=board.board_id%>" readonly />
-      <label>제목</label>
-      <input type="text" name="board_title" value="<%=board.board_title%>" readonly />
-      <label>작성자</label>
-      <input type="text" name="member_id" value="<%=board.member_nickname%>" readonly />
-      <label>작성일</label>
-      <input type="text" name="regdate" value="<%=board.regdate%>" readonly />
-      <label>조회수</label>
-      <input type="text" name="board_hit" value="<%=board.board_hit%>" readonly />
-      <label>좋아요👍</label>
-      <input type="text" name="board_good" value="<%=board.board_good%>" readonly />
-      <label>싫어요👎</label>
-      <input type="text" name="board_bad" value="<%=board.board_bad%>" readonly />
-      <%if(isRecomed.cnt==0){%>
-      <button id="bt_good" type="button">좋아요</button>
-      <button id="bt_bad" type="button">싫어요</button>
-      <%}%>
-    <label>내용</label>
-    <textarea name="board_text" cols="30" rows="10" readonly><%=board.board_text%></textarea>
-      <%for(var i=0;i<imgArray.length;i++){%>
-      <%var image = imgArray[i]%>
-      <!-- <a href="/uploads/<%=image.img%>" download><%=image.img%></a> <br> -->
-      <img src="/uploads/<%=image.img%>" alt="<%=image.img%>">
-      <%}%>
-    <input type="button" value="목록으로">
-    <%}%>
-    </form>
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-8 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-8" style="margin: auto">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">게시판 글보기</h1>
+                  </div>
+                  <form class="user">
+                    <%if(id==board.member_id){ %>
+                    <input type="hidden" name="member_id" value="<%=id%>" readonly />
+                    <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly />
+                    <input type="hidden" name="board_id" value="<%=board.board_id%>" readonly />
+                    <div class="form-group">
+                      <label>제목</label>
+                      <input type="text" name="board_title" value="<%=board.board_title%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                      <label>작성자</label>
+                      <input type="text" name="member_id" value="<%=board.member_nickname%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>작성일</label>
+                      <input type="text" name="regdate" value="<%=board.regdate%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                      <label>조회수</label>
+                      <input type="text" name="board_hit" value="<%=board.board_hit%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                    </div>
+                      <div class="col-sm-4 text-center">
+                      <label>👍</label>
+                      <input type="text" name="board_good" value="<%=board.board_good%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                    </div>
+                      <div class="col-sm-4 text-center">
+                      <label>👎</label>
+                      <input type="text" name="board_bad" value="<%=board.board_bad%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                    </div></div>
+                    <div class="form-group">
+                      <textarea rows="12" class="form-control " id="exampleInputPassword" placeholder="내용"><%=board.board_text%></textarea>
+                    </div>
+                    <div class="form-group">
+                      <%for(var i=0;i<imgArray.length;i++){%>
+                        <%var image = imgArray[i]%>
+                        <img src="/uploads/board/<%=image.img%>" alt="<%=image.img%>">
+                        <%}%>
+                    </div>
+                    <div class="form-group">
+                      <%if(isRecomed.cnt==0){%>
+                        <button id="bt_good" type="button">좋아요</button>
+                      <%}%>
+                      <%if(isRecomed.cnt==0){%>
+                        <button id="bt_bad" type="button">싫어요</button>
+                      <%}%>
+                    </div>
+                    <div class="form-group">
+                      <label>댓글</label>
+                      <ul>
+                        <%for(var i=0;i<replyArray.length;i++){%>
+                        <%var reply=replyArray[i]%>
+                        <li><%=reply.member_nickname%>(<%=reply.regdate%>) <br><%=reply.reply_text%></li>
+                        <%}%>
+                      </ul>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" id="board_reply" name="board_reply" value="" size=25/>
+                      <button type="button" id="bt_reply" class="form-control form-control-user">댓글</button>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a href="/board/list" class="btn btn-primary btn-user btn-block">
+                      목록
+                    </a>
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a id="edit" class="btn btn-facebook btn-user btn-block">
+                      수정
+                    </a>
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a id="del" class="btn btn-google btn-user btn-block">
+                      삭제
+                    </a>
+                    </div></div>
+
+                    <%}else{%>
+                      <input type="hidden" name="member_id" value="<%=id%>" readonly />
+                      <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly />
+                      <input type="hidden" name="board_id" value="<%=board.board_id%>" readonly />
+                      <div class="form-group">
+                        <label>제목</label>
+                        <input type="text" name="board_title" value="<%=board.board_title%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp">
+                      </div>
+                      <div class="form-group">
+                        <label>작성자</label>
+                        <input type="text" name="member_id" value="<%=board.member_nickname%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                      </div>
+                      <div class="form-group">
+                        <label>작성일</label>
+                        <input type="text" name="regdate" value="<%=board.regdate%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                        <label>조회수</label>
+                        <input type="text" name="board_hit" value="<%=board.board_hit%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                      </div>
+                        <div class="col-sm-4 text-center">
+                        <label>👍</label>
+                        <input type="text" name="board_good" value="<%=board.board_good%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                      </div>
+                        <div class="col-sm-4 text-center">
+                        <label>👎</label>
+                        <input type="text" name="board_bad" value="<%=board.board_bad%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                      </div></div>
+                      <div class="form-group">
+                        <textarea rows="12" class="form-control " id="exampleInputPassword" placeholder="내용"><%=board.board_text%></textarea>
+                      </div>
+                      <div class="form-group">
+                        <%for(var i=0;i<imgArray.length;i++){%>
+                          <%var image = imgArray[i]%>
+                          <img src="/uploads/board/<%=image.img%>" alt="<%=image.img%>">
+                          <%}%>
+                      </div>
+                      <div class="form-group">
+                        <%if(isRecomed.cnt==0){%>
+                          <button id="bt_good" type="button">좋아요</button>
+                        <%}%>
+                        <%if(isRecomed.cnt==0){%>
+                          <button id="bt_bad" type="button">싫어요</button>
+                        <%}%>
+                      </div>
+                      <div class="form-group">
+                        <label>댓글</label>
+                        <ul>
+                          <%for(var i=0;i<replyArray.length;i++){%>
+                          <%var reply=replyArray[i]%>
+                          <li><%=reply.member_nickname%>(<%=reply.regdate%>) <br><%=reply.reply_text%></li>
+                          <%}%>
+                        </ul>
+                      </div>
+                      <div class="form-group">
+                        <input type="text" id="board_reply" name="board_reply" value="" size=25/>
+                        <button type="button" id="bt_reply" class="form-control form-control-user">댓글</button>
+                      </div>
+                      <hr>
+                      <div class="form-group row">
+                      <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                      <a href="/board/list" class="btn btn-primary btn-user btn-block">
+                        목록
+                      </a>
+                      </div>
+                      </div>
+                      <%}%>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
-  <hr>
-  <ul>
-    <%for(var i=0;i<replyArray.length;i++){%>
-      <%var reply=replyArray[i]%>
-      <li><%=reply.member_nickname%>(<%=reply.regdate%>) : <%=reply.reply_text%></li>
-    <%}%>
-  </ul> 
-  <input type="text" id="board_reply" name="board_reply" value=""/><button type="button" id="bt_reply">댓글등록</button>
-    
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
 

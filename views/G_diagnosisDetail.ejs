@@ -1,104 +1,217 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
 
-input[type=text], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-  resize: vertical;
-}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-input[type=button] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  <title>PETSPITAL 진료기록 글쓰기</title>
 
-input[type=button]:hover {
-  background-color: #45a049;
-}
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(function(){
-    $($("input[type='button']")[0]).click(function(){
-        location.href="/diagnosis/list";
-    });
-    $($("input[type='button']")[1]).click(function(){
-        if(confirm("수정하시겠어요?")){
-        $("form").attr({
+  $("#edit").click(function(){
+    if(checkValue()){
+      $("form").attr({
           "method":"post",
           "action":"/diagnosis/edit"
         });
         $("form").submit();
-        }
-    });
-    $($("input[type='button']")[2]).click(function(){
-      if(confirm("삭제하시겠어요?")){
-        $("form").attr({
+        return true;
+      }
+  });
+  $("#del").click(function(){
+    if(checkValue()){
+      $("form").attr({
           "method":"post",
           "action":"/diagnosis/delete"
         });
         $("form").submit();
-        }
-    });
+        return true;
+      }
+  });
 });
 function checkValue(){
-  if($("form input[name=]").val()==""){
-
-  }else if($("form input[]").val()==""){
-
+  if($("form div input[name='dia_title']").val()==""){
+    return false;
+  }else if($("form div input[name='myPet']").val()==""){
+    return false;
+  }else if($("form div input[name='dia_text']").val()==""){
+    return false;
   }else{
-    
+    return true;
   }
 }
 </script>
 </head>
-<body>
 
-<h3>진료기록 보기</h3>
+<body class="bg-gradient-primary">
 
-<div class="container">
-  <form>
-    <input type="hidden" name="dia_id" value="<%=diagnosis.dia_id%>"/>
-    <input type="hidden" name="member_id" value="<%=diagnosis.member_id%>"/>
-    <input type="hidden" name="pet_id" value="<%=diagnosis.pet_id%>"/>
-    <label>제목</label>
-    <input type="text" name="dia_title" value="<%=diagnosis.dia_title%>">
-    <label>반려견이름</label>
-    <input type="text" name="pet_name" value="<%=diagnosis.pet_name%>">
-    <label>작성자</label>
-    <input type="text" name="member_nickname" value="<%=diagnosis.member_nickname%>">
-    <label>작성일</label>
-    <input type="text" name="regdate" value="<%=diagnosis.regdate%>">
-    <label>내용</label>
-    <textarea name="dia_text" cols="30" rows="10"><%=diagnosis.dia_text%></textarea>
-    <label>사진</label>
-    <input type="image" name="diagnosis_img.img"/>
+  <div class="container">
 
-    <input type="button" value="목록으로">
-    <input type="button" value="수정하기">
-    <input type="button" value="삭제하기">
-  </form>
-</div>
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-8 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-8" style="margin: auto">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">진료기록 글쓰기</h1>
+                  </div>
+                  <form class="user" >
+                  <%if(diagnosis.member_id==id){%>
+                    
+                      <input type="hidden" name="dia_id" value="<%=diagnosis.dia_id%>"/>
+                      <input type="hidden" name="member_id" value="<%=diagnosis.member_id%>"/>
+                      <input type="hidden" name="pet_id" value="<%=diagnosis.pet_id%>" />
+                      <div class="form-group">
+                        <input type="text" name="dia_title" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp"value="<%=diagnosis.dia_title%>" >
+                      </div>
+                      <div class="form-group">
+                        <input type="text" name="myPet" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp"  value="<%=diagnosis.pet_name%>" readonly>
+                      </div>
+                      <div class="form-group">
+                        <textarea  name="dia_text" rows="12" class="form-control " id="exampleInputPassword" aria-describedby="fileHelp"
+                        multiple placeholder="내용"><%=diagnosis.dia_text%></textarea>
+                      </div>
+                      <div class="form-group row">
+                        <%if(diagnosis.ispublic==1){%>
+                          <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                            <label>게시판 공개<input type="radio" name="ispublic" value="1" class="form-control form-control-user" checked></label>
+                          </div>
+                          <div class="col-sm-6 text-center">
+                            <label>게시판 비공개<input type="radio" name="ispublic" value="0" class="form-control form-control-user"></label>
+                          </div>
+                        <%}else{%>
+                          <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                            <label>게시판 공개<input type="radio" name="ispublic" value="1" class="form-control form-control-user"></label>
+                          </div>
+                          <div class="col-sm-6 text-center">
+                            <label>게시판 비공개<input type="radio" name="ispublic" value="0" class="form-control form-control-user" checked></label>
+                          </div>
+                        <%}%>
+                        
+                      </div>
+                      <%for(var i=0;i<imgArray.length;i++){%>
+    
+                        <%var image = imgArray[i]%>
+                        <div class="form-group">
+                        <img src="/uploads/diagnosis/<%=image.img%>" alt="<%=image.img%>">
+                      </div>
+                      <%}%>
+                      
+                      <hr>
+                      <div class="form-group row">
+                        <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                      <a href="/diagnosis/list" class="btn btn-primary btn-user btn-block">
+                        목록
+                      </a>
+                      </div>
+                      <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+
+                      <a id="edit" class="btn btn-facebook btn-user btn-block">
+                        수정
+                      </a>
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                      <a id="del" class="btn btn-google btn-user btn-block">
+                        삭제
+                      </a>
+                    </div>
+                      </div>
+                    
+                  <%}else{%>
+                    
+                      <input type="hidden" name="dia_id" value="<%=diagnosis.dia_id%>"/>
+                      <input type="hidden" name="member_id" value="<%=diagnosis.member_id%>"/>
+                      <input type="hidden" name="pet_id" value="<%=diagnosis.pet_id%>" />
+                      <div class="form-group">
+                        <input type="text" name="dia_title" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp"value="<%=diagnosis.dia_title%>" readonly>
+                      </div>
+                      <div class="form-group">
+                        <input type="text" name="myPet" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp"  value="<%=diagnosis.pet_name%>" readonly>
+                      </div>
+                      <div class="form-group">
+                        <textarea  name="dia_text" rows="12" class="form-control " id="exampleInputPassword" aria-describedby="fileHelp"
+                        multiple placeholder="내용" readonly><%=diagnosis.dia_text%></textarea>
+                      </div>
+                      <div class="form-group row">
+                        <%if(diagnosis.ispublic==1){%>
+                          <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                            <label>게시판 공개<input type="radio" name="ispublic" value="1" class="form-control form-control-user" checked readonly></label>
+                          </div>
+                          <div class="col-sm-6 text-center">
+                            <label>게시판 비공개<input type="radio" name="ispublic" value="0" class="form-control form-control-user" readonly></label>
+                          </div>
+                        <%}else{%>
+                          <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                            <label>게시판 공개<input type="radio" name="ispublic" value="1" class="form-control form-control-user" readonly></label>
+                          </div>
+                          <div class="col-sm-6 text-center">
+                            <label>게시판 비공개<input type="radio" name="ispublic" value="0" class="form-control form-control-user" checked readonly></label>
+                          </div>
+                        <%}%>
+                        
+                      </div>
+                      <%for(var i=0;i<imgArray.length;i++){%>
+    
+                        <%var image = imgArray[i]%>
+                        <div class="form-group">
+                        <img src="/uploads/diagnosis/<%=image.img%>" alt="<%=image.img%>">
+                      </div>
+                      <%}%>
+                      
+                      <hr>
+                      <div class="form-group row">
+                      <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                      <a href="/diagnosis/list" class="btn btn-primary btn-user btn-block">
+                        목록
+                      </a>
+                      </div>
+                      
+                    
+                  <%}%>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>

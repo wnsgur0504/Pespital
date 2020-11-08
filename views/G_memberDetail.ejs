@@ -1,106 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
 
-input[type=text], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-  resize: vertical;
-}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-input[type=button] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+    <title>PETSPITAL 회원관리</title>
 
-input[type=button]:hover {
-  background-color: #45a049;
-}
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$(function(){
-    $($("input[type='button']")[0]).click(function(){
-        location.href="/member/list";
-    });
-    $($("input[type='button']")[1]).click(function(){
-        if(confirm("수정하시겠어요?")){
-        $("form").attr({
-          "method":"post",
-          "action":"/member/edit"
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#edit").click(function () {
+                if (confirm("수정하시겠어요?")) {
+                    $("form").attr({
+                        "method": "post",
+                        "action": "/member/detail/a_edit"
+                    });
+                    $("form").submit();
+                }
+            });
+            $("#del").click(function () {
+                if (confirm("삭제하시겠어요?")) {
+                    $("form").attr({
+                        "method": "post",
+                        "action": "/member/detail/a_delete"
+                    });
+                    $("form").submit();
+                }
+            });
         });
-        $("form").submit();
-        }
-    });
-    $($("input[type='button']")[2]).click(function(){
-      if(confirm("삭제하시겠어요?")){
-        $("form").attr({
-          "method":"post",
-          "action":"/member/delete"
-        });
-        $("form").submit();
-        }
-    });
-});
-function checkValue(){
-  if($("form input[name=]").val()==""){
+        function checkValue() {
+            if ($("form input[name=]").val() == "") {
 
-  }else if($("form input[]").val()==""){
+            } else if ($("form input[]").val() == "") {
 
-  }else{
-    
-  }
-}
-</script>
+            } else {
+
+            }
+        }
+    </script>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        ul {
+            list-style: none;
+        }
+    </style>
 </head>
-<body>
 
-<h3>회원 자세히 보기</h3>
+<body class="bg-gradient-primary">
 
-<div class="container">
-  <form>
-    <label>아이디</label>
-    <input type="text" name="member_id" value="<%=member.member_id%>">
-    <label>비밀번호</label>
-    <input type="text" name="password" value="<%=member.password%>">
-    <label>타입</label>
-    <input type="text" name="type_name" value="<%=member.type_name%>">
-    <label>이름</label>
-    <input type="text" name="name" value="<%=member.member_name%>">
-    <label>이메일</label>
-    <input type="text" name="email_id" value="<%=member.email_id%>">
-    @ <input type="text" name="email_address" value="<%=member.email_address%>">
-    <label>연락처</label>
-    <input type="text" name="member_phone" value="<%=member.member_phone%>">
-    <label>닉네임</label>
-    <input type="text" name="member_nickname" value="<%=member.member_nickname%>">
-    <label>가입날짜</label>
-    <input type="text" name="regdate" value="<%=member.regdate%>">
+    <div class="container">
 
-    <input type="button" value="목록으로">
-    <input type="button" value="수정하기">
-    <input type="button" value="삭제하기">
-  </form>
-</div>
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-8 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-8" style="margin: auto">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">회원정보보기</h1>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <input type="text" name="member_id" value="<%=member.member_id%>" class="form-control form-control-user"
+                                                id="exampleInputPassword" placeholder="아이디" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="password" value="<%=member.password%>" class="form-control form-control-user"
+                                                id="exampleInputEmail" placeholder="비밀번호">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="member_name" value="<%=member.member_name%>" class="form-control form-control-user"
+                                                id="exampleInputEmail" placeholder="이름" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" name="email_id" value="<%=member.email_id%>" class="form-control form-control-user"
+                                                id="exampleInputEmail" placeholder="이메일" >
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="member_phone" value="<%=member.member_phone%>" class="form-control form-control-user"
+                                                id="exampleInputEmail" placeholder="연락처" >
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="member_nickname" value="<%=member.member_nickname%>" class="form-control form-control-user"
+                                                id="exampleInputEmail" placeholder="닉네임" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="regdate" value="<%=member.regdate%>" class="form-control form-control-user"
+                                                id="exampleInputEmail" placeholder="등록날짜" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>관리자<input type="radio" name="type_id" value="0" readonly  class="form-control form-control-user" <%if(member.type_id==0){%>checked<%}%>></label>
+                                            <label>일반<input type="radio" name="type_id" value="1" readonly class="form-control form-control-user" <%if(member.type_id==1){%>checked<%}%>></label>
+                                            <label>의사<input type="radio" name="type_id" value="2" readonly class="form-control form-control-user" <%if(member.type_id==2){%>checked<%}%>></label>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                                                <a href="/member/list" class="btn btn-primary btn-user btn-block">
+                                                    목록
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                                                <a id="edit" class="btn btn-facebook btn-user btn-block">
+                                                    수정
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                                                <a id="del" class="btn btn-google btn-user btn-block">
+                                                    삭제
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>

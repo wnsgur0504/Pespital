@@ -1,64 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-<style type='text/css'>
-@import url("bootstrap.css");
-.btn-outline-primary {
-  color: #e95420;
-  border-color: #e95420;
-}
 
-.btn-outline-primary:hover {
-  color: #fff;
-  background-color: #e95420;
-  border-color: #e95420;
-}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-.btn-outline-primary:focus, .btn-outline-primary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(233, 84, 32, 0.5);
-}
+  <title>PETSPITAL 게시판 글쓰기</title>
 
-.btn-outline-primary.disabled, .btn-outline-primary:disabled {
-  color: #e95420;
-  background-color: transparent;
-}
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
-.show > .btn-outline-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #e95420;
-  border-color: #e95420;
-}
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-.btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
-.show > .btn-outline-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(233, 84, 32, 0.5);
-}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(function(){
-  $($("button[type='button']")[0]).click(function(){
-    location.href="/board/list";
-  });
-  $($("button[type='button']")[1]).click(function(){
+  $("#regist").click(function(){
+    if(checkValue()){
       $("form").attr({
           "method":"post",
           "action":"/board/regist"
         });
         $("form").submit();
         return true;
+      }
   });
 });
 function checkValue(){
-  if($("form input[name='board_title']").val()==""){
+  if($("form div input[name='board_title']").val()==""){
     return false;
-  }else if($("form input[name='board_text']").val()==""){
+  }else if($("form div input[name='board_text']").val()==""){
     return false;
   }else{
     return true;
@@ -66,32 +43,70 @@ function checkValue(){
 }
 </script>
 </head>
-<body>
 
-<h1 style="color:tomato; text-align:center">PETSPITAL</h1>
+<body class="bg-gradient-primary">
 
-<form action="/board/regist" method="POST" enctype="multipart/form-data">
-  <fieldset>
-    <div class="col-sm-4 m-sm-auto">
-    <label for="staticEmail" class="col-sm-5 col-form-label">제목</label>
-    <input type="text"  name="board_title" class="form-control" id="exampleInputEmail1">
-    </div>
-    <div class="col-sm-4 m-sm-auto">
-    <label for="staticEmail" class="col-sm-5 col-form-label">내용</label>
-    <textarea class="form-control" id="exampleTextarea" rows="3" name="board_text"></textarea>
-    </div>
-    <div class="col-sm-4 m-sm-auto">
-    <label for="staticEmail" class="col-sm-5 col-form-label">사진</label>
-    <input type="file" name="images"  class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" multiple/>
-    <small id="fileHelp" class="form-text text-muted"></small>
-    </div>
-    <div class="col-sm-4 m-sm-auto">
-      <button type="button" class="btn btn-outline-primary">목록</button>
-      <button type="button" class="btn btn-outline-primary">등록</button>
-    </div>
-  </fieldset>
-</form>
+  <div class="container">
 
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-8 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-8" style="margin: auto">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">게시판 글쓰기</h1>
+                  </div>
+                  <form class="user" action="/board/regist" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <input type="text"  name="board_title" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp" placeholder="제목">
+                    </div>
+                    <div class="form-group">
+                      <textarea name="board_text" rows="12" class="form-control " id="exampleInputPassword" placeholder="내용"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <input type="file" name="images"  class="form-control form-control-user" id="exampleInputFile" aria-describedby="fileHelp" multiple/>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                    <a href="/board/list" class="btn btn-primary btn-user btn-block">
+                      목록
+                    </a>
+                    </div>
+                    <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                    <a id="regist" class="btn btn-primary btn-user btn-block">
+                      등록
+                    </a>
+                    </div></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>
