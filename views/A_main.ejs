@@ -19,11 +19,30 @@
 
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+  <style>
+    #animal {
+      max-width: 50%;
+      height: auto !important;
+      margin: auto;
+    }
 
+    #scroll {
+      height: 275px;
+      overflow: auto;
+    }
+
+    #scroll::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function redirectToCondition(condition, animal_id){
+      var text = $(condition).text();
+      location.href="/disease/detail?condition="+text+"&animal_id="+animal_id;      
+    }
+  </script>
 </head>
-<script>
-  
-</script>
 
 <body id="page-top">
 
@@ -45,21 +64,13 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="#">
+      <li class="nav-item">
+        <a class="nav-link" href="/member">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>진단</span></a>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>지도</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
@@ -80,6 +91,13 @@
           <i class="fas fa-fw fa-table"></i>
           <span>게시판</span></a>
       </li>
+      <%if(type==1){%>
+      <li class="nav-item">
+        <a class="nav-link" href="/member/list">
+          <i class="fas fa-fw fa-table"></i>
+          <span>회원목록</span></a>
+      </li>
+      <%}%>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -102,22 +120,22 @@
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
           <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop"  class="btn btn-link d-md-none rounded-circle mr-3">
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
               <input type="text" class="form-control bg-light border-0 small" placeholder="검색..." aria-label="Search"
                 aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary" onClick="location.href='http://www.naver.com'" type="button">
+                <button class="btn btn-primary" type="button">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
             </div>
-          </form>
+          </form> -->
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -147,31 +165,43 @@
 
             <!-- Nav Item - User Information -->
             <%if(nickname!=""){%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
-                  <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="/member/myEdit">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내정보수정
                 </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="/member/myEdit">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    내정보수정
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/member/logout">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    로그아웃
-                  </a>
-                </div>
-              </li>
-              <%}else{%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="/member/login" role="button">
-                  로그인
+                <a class="dropdown-item" href="/animal/myPet">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내동물관리
                 </a>
-              </li>
-              <%}%>
+                <a class="dropdown-item" href="/board/myBoard">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내글관리
+                </a>
+                <a class="dropdown-item" href="/diagnosis/myDiagnosis">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내진료관리
+                </a>
+                <a class="dropdown-item" href="/member/logout"  >
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  로그아웃
+                </a>
+
+              </div>
+            </li>
+            <%}else{%>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="/html/login.html" role="button">
+                로그인
+              </a>
+            </li>
+            <%}%>
           </ul>
 
         </nav>
@@ -182,13 +212,13 @@
           <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active" data-interval="10000">
-                <img src="/img/travel/1.jpg" class="d-block w-100" alt="..." height="500px">
+                <img src="/img/ad/ad3.jpg" class="d-block w-100" alt="..." height="300px">
               </div>
               <div class="carousel-item" data-interval="10000">
-                <img src="/img/travel/2.jpg" class="d-block w-100" alt="..." height="500px">
+                <img src="/img/ad/ad2.jpg" class="d-block w-100" alt="..." height="300px">
               </div>
               <div class="carousel-item" data-interval="10000">
-                <img src="/img/travel/3.jpg" class="d-block w-100" alt="..." height="500px">
+                <img src="/img/ad/ad1.jpg" class="d-block w-100" alt="..." height="300px">
               </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
@@ -208,90 +238,151 @@
           <!-- Content Row -->
           <div class="row">
 
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-2">강아지</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-success text-uppercase mb-2">고양이</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-info text-uppercase mb-2">햄스터</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pending Requests Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="h5 mb-0 font-weight-bold text-warning text-uppercase mb-2">앵무새</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                      <div class="h7 mb-0 font-weight-bold text-gray-800">귀간지러움</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <img src="/img/animalPic/dog.png" id="animal" class="card-img-top">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <a class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-2">강아지</a>
+                  <hr>
+                  <div id="scroll">               
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800" >눈을 자주 만진다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">눈에 충혈이 있다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">눈을 빠르게 깜빡인다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">과도하게 침을 흘린다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">구역질을 한다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">식욕이 없다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">피부가 거칠다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">발과 발톱이 이상하다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">발에 통증을 느낀다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">털이 빠진다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">몸이 굳는다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">구토를 한다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">소리를 지른다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">몸이 떨린다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">열이 난다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">오한을 느낀다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">배가 빵빵하다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">소변을 자주 본다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">몸이 차갑다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">물을 지나치게 마신다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">변량이 감소했다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">복통을 느낀다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">입을 벌리지 못한다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">호흡이 빠르다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">꼬리를 자주 만진다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">복부팽만이 있다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">입에 거품을 문다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">귀를 긁는다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">귓밥이 많다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">눈이 축축하다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">이상한 소리를 낸다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">온몸을 긁는다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">피부에 뭐가 잡힌다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">걷다 앞으로 넘어진다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">기립이 불가능하다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">코피를 흘린다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">눈물을 흘린다</a><br>
+                  <a onclick="redirectToCondition(this, 1)" class="h7 mb-0 font-weight-bold text-gray-800">눈이 튀어나왔다</a><br>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Earnings (Monthly) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+          <img src="/img/animalPic/cat.png" id="animal" class="card-img-top">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <a class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-2">고양이</a>
+                <hr>
+                <div id="scroll">               
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">눈을 자주 만진다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">눈에 충혈이 있다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">눈을 빠르게 깜빡인다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">구역질을 한다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">식욕이 없다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">피부가 거칠다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">발과 발톱이 이상하다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">발에 통증을 느낀다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">혀에 통증을 느낀다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">다리를 절둑거린다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">털이 빠진다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">몸이 굳는다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">구토를 한다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">소리를 지른다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">몸이 떨린다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">열이 난다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">오한을 느낀다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">배가 빵빵하다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">소변을 자주 본다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">몸이 차갑다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">물을 지나치게 마신다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">변량이 감소했다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">복통을 느낀다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">입을 벌리지 못한다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">호흡이 빠르다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">꼬리를 자주 만진다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">복부팽만이 있다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">귀를 긁는다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">귓밥이 많다</a><br>
+                  <a onclick="redirectToCondition(this, 2)" class="h7 mb-0 font-weight-bold text-gray-800">눈이 축축하다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">이상한 소리를 낸다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">온몸을 긁는다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">피부에 뭐가 잡힌다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">걷다 앞으로 넘어진다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">기립이 불가능하다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">코피를 흘린다</a><br>
+                  <a  onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">눈물을 흘린다</a><br>
+                  <a onclick="redirectToCondition(this, 2)"class="h7 mb-0 font-weight-bold text-gray-800">눈이 튀어나왔다</a><br>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-info shadow h-100 py-2">
+            <img src="/img/animalPic/hamster.png" id="animal" class="card-img-top">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <a class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-2">햄스터</a>
+                  <hr>
+                  <div >               
+                  <a class="h7 mb-0 font-weight-bold text-gray-800">준비중</a><br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Earnings (Monthly) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+          <img src="/img/animalPic/parrot.png" id="animal" class="card-img-top">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <a class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-2">앵무새</a>
+                <hr>
+                <div >               
+                <a class="h7 mb-0 font-weight-bold text-gray-800">준비중</a><br>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
         </div>
 
 
@@ -301,11 +392,124 @@
       <!-- End of Main Content -->
 
 
+      <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c66d624c659f80c253380817228c3e9&libraries=services&radius=200000"></script>
+<div id="map" style="width:100%;height:350px;"></div>
+<script>
+// 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+console.log("data");
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 4 // 지도의 확대 레벨
+    };  
 
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+// 장소 검색 객체를 생성합니다
+var ps = new kakao.maps.services.Places(); 
+
+
+// 키워드로 장소를 검색합니다
+ps.keywordSearch("동물병원", placesSearchCB); 
+
+// 키워드 검색 완료 시 호출되는 콜백함수 입니다
+function placesSearchCB (data, status, pagination) {
+	
+    if (status === kakao.maps.services.Status.OK) {
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        var bounds = new kakao.maps.LatLngBounds();
+
+        for (var i=0; i<data.length; i++) {
+            displayMarker(data[i]);    
+            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }       
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        // map.setBounds(bounds);
+    } 
+}
+
+// 지도에 마커를 표시하는 함수입니다
+function displayMarker(place) {
+    
+    // 마커를 생성하고 지도에 표시합니다
+    var marker = new kakao.maps.Marker({
+        map: map,
+		position: new kakao.maps.LatLng(place.y, place.x) 
+		
+    });
+
+    // 마커에 클릭이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, 'click', function() {
+        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+        infowindow.open(map, marker);
+    });
+}
+
+// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+if (navigator.geolocation) {
+    
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+        
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker2(locPosition, message);
+            
+      });
+    
+} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+        message = 'geolocation을 사용할수 없어요..'
+        
+    displayMarker2(locPosition, message);
+}
+
+// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+function displayMarker2(locPosition, message) {
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({  
+        map: map, 
+        position: locPosition
+    }); 
+    
+    var iwContent = message, // 인포윈도우에 표시할 내용
+        iwRemoveable = true;
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content : iwContent,
+        removable : iwRemoveable
+    });
+    
+    // 인포윈도우를 마커위에 표시합니다 
+    infowindow.open(map, marker);
+    
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);      
+}    
+</script>
       <!-- Footer -->
+      <hr>
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
+            <span>PETSPITAL</span><br><br>
+            <span>서울특별시 관악구 신림동 1441-20</span><br><br>
+            <span>☎ 010 3929 6743</span><br><br>
+            <span>☎ 010 3688 6812</span>
             <span>Copyright &copy; Your Website 2020</span>
           </div>
         </div>

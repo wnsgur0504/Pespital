@@ -20,7 +20,9 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+    
     $(function () {
+      
       $("#edit").click(function () {
         if (confirm("수정하시겠어요?")) {
           $("form").attr({
@@ -43,17 +45,23 @@
         // GET 방식으로 서버에 HTTP 요청을 보냄.
         var board_id = $("form input[name=board_id]").val();
         var member_id = $("form input[name=member_id]").val();
+        var check = $("#check").val();
+    
         $.get("/board/good?board_id=" + board_id + "&member_id=" + member_id, function (data, status) { });
-        $("#bt_good").remove();
-        $("#bt_bad").remove();
+        // $("#bt_good").remove();
+        // $("#bt_bad").remove();
+        location.reload();
+ 
       });
       $("#bt_bad").on("click", function () {
         // GET 방식으로 서버에 HTTP 요청을 보냄.
         var board_id = $("form input[name=board_id]").val();
         var member_id = $("form input[name=member_id]").val();
+        
         $.get("/board/bad?board_id=" + board_id + "&member_id=" + member_id, function (data, status) { });
-        $("#bt_good").remove();
-        $("#bt_bad").remove();
+        // $("#bt_good").remove();
+        // $("#bt_bad").remove();
+        location.reload();
       });
       $("#bt_reply").on("click", function () {
         var reply = $("input[name='board_reply']").val();
@@ -84,6 +92,7 @@
 
       }
     }
+    
 
   </script>
   <style>
@@ -118,7 +127,7 @@
                     <h1 class="h4 text-gray-900 mb-4">게시판 글보기</h1>
                   </div>
                   <form class="user">
-                    <%if(id==board.member_id){ %>
+                    <%if(id==board.member_id || 1==type){ %>
                     <input type="hidden" name="member_id" value="<%=id%>" readonly />
                     <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly />
                     <input type="hidden" name="board_id" value="<%=board.board_id%>" readonly />
@@ -141,11 +150,11 @@
                     </div>
                       <div class="col-sm-4 text-center">
                       <label>👍</label>
-                      <input type="text" name="board_good" value="<%=board.board_good%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                      <input type="text" name="board_good"  value="<%=board.board_good%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp"  readonly  >
                     </div>
                       <div class="col-sm-4 text-center">
                       <label>👎</label>
-                      <input type="text" name="board_bad" value="<%=board.board_bad%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                      <input type="text" name="board_bad" value="<%=board.board_bad%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp"  readonly  >
                     </div></div>
                     <div class="form-group">
                       <textarea rows="12" class="form-control " id="exampleInputPassword" placeholder="내용"><%=board.board_text%></textarea>
@@ -156,46 +165,58 @@
                         <img src="/uploads/board/<%=image.img%>" alt="<%=image.img%>">
                         <%}%>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <%if(isRecomed.cnt==0){%>
                         <button id="bt_good" type="button">좋아요</button>
                       <%}%>
                       <%if(isRecomed.cnt==0){%>
                         <button id="bt_bad" type="button">싫어요</button>
                       <%}%>
-                    </div>
-                    <div class="form-group">
-                      <label>댓글</label>
-                      <ul>
-                        <%for(var i=0;i<replyArray.length;i++){%>
-                        <%var reply=replyArray[i]%>
-                        <li><%=reply.member_nickname%>(<%=reply.regdate%>) <br><%=reply.reply_text%></li>
-                        <%}%>
-                      </ul>
-                    </div>
-                    <div class="form-group">
-                      <input type="text" id="board_reply" name="board_reply" value="" size=25/>
-                      <button type="button" id="bt_reply" class="form-control form-control-user">댓글</button>
-                    </div>
-                    <hr>
+                    </div> -->
                     <div class="form-group row">
-                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                    <a href="/board/list" class="btn btn-primary btn-user btn-block">
-                      목록
-                    </a>
-                    </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                    <a id="edit" class="btn btn-facebook btn-user btn-block">
-                      수정
-                    </a>
-                    </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                    <a id="del" class="btn btn-google btn-user btn-block">
-                      삭제
-                    </a>
-                    </div></div>
-
+                      <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                      <a onclick="history.back()" class="btn btn-primary btn-user btn-block">
+                        목록
+                      </a>
+                      </div>
+                      <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                      <a id="edit" class="btn btn-facebook btn-user btn-block">
+                        수정
+                      </a>
+                      </div>
+                      <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                      <a id="del" class="btn btn-google btn-user btn-block">
+                        삭제
+                      </a>
+                      </div></div>
+                      <hr>
+                        <div class="card shadow mb-4">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">댓글</h6>
+                          </div>
+                          <div class="card-body" id="wrapper">  
+                            <ul>
+                              <%for(var i=0;i<replyArray.length;i++){%>
+                              <%var reply=replyArray[i]%>
+                              <li><%=reply.member_nickname%>(<%=reply.regdate%>) <br><%=reply.reply_text%></li>
+                              <%}%>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <input type="text" name="board_reply" id="board_reply" class="form-control form-control-user"/>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                          <a id="bt_reply" class="btn btn-primary btn-user btn-block">
+                            댓글등록
+                          </a>
+                          </div>
+                          </div>          
+                     
                     <%}else{%>
+                      
+                    <input type="hidden" name="" id="check" value="">
                       <input type="hidden" name="member_id" value="<%=id%>" readonly />
                       <input type="hidden" name="member_nickname" value="<%=nickname%>" readonly />
                       <input type="hidden" name="board_id" value="<%=board.board_id%>" readonly />
@@ -218,11 +239,11 @@
                       </div>
                         <div class="col-sm-4 text-center">
                         <label>👍</label>
-                        <input type="text" name="board_good" value="<%=board.board_good%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                        <input type="text" name="board_good" value="<%=board.board_good%>" class="form-control form-control-user"  aria-describedby="emailHelp"   readonly  <%if(isRecomed.cnt==0){%>id="bt_good"<%}%>>
                       </div>
                         <div class="col-sm-4 text-center">
                         <label>👎</label>
-                        <input type="text" name="board_bad" value="<%=board.board_bad%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                        <input type="text"  name="board_bad" value="<%=board.board_bad%>" class="form-control form-control-user"   aria-describedby="emailHelp"   readonly  <%if(isRecomed.cnt==0){%>id="bt_bad"<%}%>>
                       </div></div>
                       <div class="form-group">
                         <textarea rows="12" class="form-control " id="exampleInputPassword" placeholder="내용"><%=board.board_text%></textarea>
@@ -233,35 +254,45 @@
                           <img src="/uploads/board/<%=image.img%>" alt="<%=image.img%>">
                           <%}%>
                       </div>
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <%if(isRecomed.cnt==0){%>
                           <button id="bt_good" type="button">좋아요</button>
                         <%}%>
                         <%if(isRecomed.cnt==0){%>
                           <button id="bt_bad" type="button">싫어요</button>
                         <%}%>
-                      </div>
-                      <div class="form-group">
-                        <label>댓글</label>
-                        <ul>
-                          <%for(var i=0;i<replyArray.length;i++){%>
-                          <%var reply=replyArray[i]%>
-                          <li><%=reply.member_nickname%>(<%=reply.regdate%>) <br><%=reply.reply_text%></li>
-                          <%}%>
-                        </ul>
-                      </div>
-                      <div class="form-group">
-                        <input type="text" id="board_reply" name="board_reply" value="" size=25/>
-                        <button type="button" id="bt_reply" class="form-control form-control-user">댓글</button>
-                      </div>
-                      <hr>
+                      </div> -->
                       <div class="form-group row">
-                      <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                      <a href="/board/list" class="btn btn-primary btn-user btn-block">
-                        목록
-                      </a>
-                      </div>
-                      </div>
+                        <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                        <a onclick="history.back()"  class="btn btn-primary btn-user btn-block">
+                          목록
+                        </a>
+                        </div>
+                        </div>
+                        <hr>
+                        <div class="card shadow mb-4">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">댓글</h6>
+                          </div>
+                          <div class="card-body" id="wrapper">  
+                            <ul>
+                              <%for(var i=0;i<replyArray.length;i++){%>
+                              <%var reply=replyArray[i]%>
+                              <li><%=reply.member_nickname%>(<%=reply.regdate%>) <br><%=reply.reply_text%></li>
+                              <%}%>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <input type="text" name="board_reply" id="board_reply" class="form-control form-control-user"/>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                          <a id="bt_reply" class="btn btn-primary btn-user btn-block">
+                            댓글등록
+                          </a>
+                          </div>
+                          </div>    
                       <%}%>
                   </form>
                 </div>

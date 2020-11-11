@@ -1,48 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
 
-input[type=text], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-  resize: vertical;
-}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-input[type=button] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  <title>PETSPITAL 진단</title>
 
-input[type=button]:hover {
-  background-color: #45a049;
-}
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(function(){
-    $($("input[type='button']")[0]).click(function(){
-        location.href="/disease/list";
-    });
-    $($("input[type='button']")[1]).click(function(){
+  if(checkValue){
+    $("#edit").click(function(){
         if(confirm("수정하시겠어요?")){
         $("form").attr({
           "method":"post",
@@ -51,7 +31,7 @@ $(function(){
         $("form").submit();
         }
     });
-    $($("input[type='button']")[2]).click(function(){
+    $("#del").click(function(){
       if(confirm("삭제하시겠어요?")){
         $("form").attr({
           "method":"post",
@@ -60,39 +40,134 @@ $(function(){
         $("form").submit();
         }
     });
+  }
 });
 function checkValue(){
-  if($("form input[name=]").val()==""){
-
-  }else if($("form input[]").val()==""){
-
+  if($("form input[name=disease_name]").val()==""){
+    return false;
+  }else if($("form input[name=disease_condition]").val()==""){
+    return false;
+  }else if($("form input[name=disease_preventing]").val()==""){
+    return false;
   }else{
-    
+    return true;
   }
 }
 </script>
+<style>
+img {
+  max-width: 100%;
+  height: auto !important;
+}
+
+ul {
+  list-style: none;
+}
+</style>
 </head>
-<body>
 
-<h3>질병 정보 보기</h3>
+<body class="bg-gradient-primary">
 
-<div class="container">
-  <form>
-    <input type="hidden" name="disease_id" value="<%=disease.disease_id%>"/>
-    <input type="hidden" name="animal_id" value="<%=animal.disease_id%>"/>
-    <input type="hidden" name="div_id" value="<%=div.disease_id%>"/>
-    <label>이름</label>
-    <input type="text" name="disease_name" value="<%=disease.disease_name%>">
-    <label>증상</label>
-    <input type="text" name="disease_condition" value="<%=disease.condition%>">
-    <label>예방법</label>
-    <textarea name="disease_preventing" cols="30" rows="10"><%=disease.disease_preventing%></textarea>
+  <%for(var i=0;i<diseaseArray.length;i++){%>
+    <%var disease=diseaseArray[i];%>
+  <div class="container">
 
-    <input type="button" value="목록으로">
-    <input type="button" value="수정하기">
-    <input type="button" value="삭제하기">
-  </form>
-</div>
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-8 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-8" style="margin: auto">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">진단</h1>
+                  </div>
+                  <form class="user">
+                    <%if(member_type==1){%>
+                        <input type="hidden" name="disease_id" value="<%=disease.disease_id%>"/>
+                        <input type="hidden" name="animal_id" value="<%=disease.animal_id%>"/>
+                        <input type="hidden" name="div_id" value="<%=disease.div_id%>"/>
+                    <div class="form-group">
+                      <label>질병이름</label>
+                      <input type="text" name="disease_name" value="<%=disease.disease_name%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                      <label>질병증상</label>
+                      <textarea rows="5" name="disease_condition" class="form-control " id="exampleInputPassword" placeholder="내용"><%=disease.disease_condition%></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label>대처법</label>
+                      <textarea rows="5" name="disease_preventing" class="form-control " id="exampleInputPassword" placeholder="내용"><%=disease.disease_preventing%></textarea>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a href="/member" class="btn btn-primary btn-user btn-block">
+                      목록
+                    </a>
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a id="edit" class="btn btn-facebook btn-user btn-block">
+                      수정
+                    </a>
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a id="del" class="btn btn-google btn-user btn-block">
+                      삭제
+                    </a>
+                    </div></div>
+                    <%}else{%>
+                        <input type="hidden" name="disease_id" value="<%=disease.disease_id%>"/>
+                        <input type="hidden" name="animal_id" value="<%=disease.animal_id%>"/>
+                        <input type="hidden" name="div_id" value="<%=disease.div_id%>"/>
+                    <div class="form-group">
+                      <label>질병이름</label>
+                      <input type="text" name="disease_name" value="<%=disease.disease_name%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>질병증상</label>
+                      <textarea rows="5" class="form-control " id="exampleInputPassword" placeholder="내용" readonly><%=disease.disease_condition%></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label>대처법</label>
+                      <textarea rows="5" class="form-control " id="exampleInputPassword" placeholder="내용" readonly><%=disease.disease_preventing%></textarea>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a href="/member" class="btn btn-primary btn-user btn-block">
+                      메인으로
+                    </a>
+                    </div></div>
+                    <%}%>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <%}%>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>

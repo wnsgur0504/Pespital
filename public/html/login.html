@@ -20,15 +20,31 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+  
 $(function(){
-
+  var result;
     $($("#login")).click(function(){
       if(checkValue()){
-        $("form").attr({
-            "method":"post",
-            "action":"/member/login"
-          });
-          $("form").submit();  
+          $("form").attr({
+              "method":"post",
+              "action":"/member/login"
+            });
+            $("form").submit();  
+    //         var member_id = $("form input[name=id]").val();
+    //         var password = $("form input[name=password]").val();
+    //         $.ajax({
+    //           data:{"member_id":member_id, "password":password},
+    //           url:"/member/login",
+    //           dataType:'json',
+    //           async:false,
+    //           success:function(data){
+    //             result=data;
+    //             console.log(result);
+    //           }        
+    // })
+    //     if(result==0){
+    //             history.back();
+    //           }
       }else{
         alert("아이디 비밀번호를 입력해주세요");
       }

@@ -42,21 +42,13 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="#">
+      <li class="nav-item">
+        <a class="nav-link" href="/member">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>진단</span></a>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>지도</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
@@ -77,8 +69,13 @@
           <i class="fas fa-fw fa-table"></i>
           <span>게시판</span></a>
       </li>
-
-
+      <%if(type==1){%>
+        <li class="nav-item">
+          <a class="nav-link" href="/member/list">
+            <i class="fas fa-fw fa-table"></i>
+            <span>회원목록</span></a>
+        </li>
+        <%}%>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -105,7 +102,7 @@
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
               <input type="text" class="form-control bg-light border-0 small" placeholder="검색..." aria-label="Search"
                 aria-describedby="basic-addon2">
@@ -115,7 +112,7 @@
                 </button>
               </div>
             </div>
-          </form>
+          </form> -->
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -145,30 +142,43 @@
 
             <!-- Nav Item - User Information -->
             <%if(nickname!=""){%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="/member/myEdit">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내정보수정
                 </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="/member/myEdit">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    내정보수정
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/member/logout" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    로그아웃
-                  </a>
-                </div>
-              </li>
-              <%}else{%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="/member/login" role="button">
-                  로그인
+                <a class="dropdown-item" href="/animal/myPet">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내동물관리
                 </a>
-              </li>
-              <%}%>
+                <a class="dropdown-item" href="/board/myBoard">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내글관리
+                </a>
+                <a class="dropdown-item" href="/diagnosis/myDiagnosis">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내진료관리
+                </a>
+                <a class="dropdown-item" href="/member/logout"  >
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  로그아웃
+                </a>
+
+              </div>
+            </li>
+            <%}else{%>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="/html/login.html" role="button">
+                로그인
+              </a>
+            </li>
+            <%}%>
           </ul>
 
         </nav>
@@ -211,8 +221,8 @@
                   <tbody>
                       <tr>
                         <input type="hidden" name="board_id" value="<%=board.board_id%>" />
-                      <td><a href="/board/detail?board_id=<%=board.board_id%>&member_id=<%=id%>"><%=board.board_title%>(<%=board.cnt%>)</a></td>
-                      <td><%=board.member_nickname%></td>
+                      <td><a href="/board/detail?board_id=<%=board.board_id%>&member_id=<%=id%>" <%if(board.type_id==1){%>style="color:red; font-weight:bold"<%}%>><%=board.board_title%>(<%=board.cnt%>)</a></td>
+                      <td><%=board.member_nickname%><%if(board.type_id==1){%>🧔🏻<%}else if(board.type_id==2){%>🙍🏻‍♂️<%}else{%>👩🏻‍⚕️<%}%></td>
                       <td><%=board.regdate%></td>
                       <td><%=board.board_hit%></td>
                       <td><%=board.board_good%></td>
@@ -242,11 +252,17 @@
                           <a href="/board/list?currentPage=<%=totalPage%>&query=<%=query%>&sort=<%=sort%>">>></a>
                           <%}%>
                         </span>
+                        <hr>
                           <form action="">
-                            <input type="search" name="query" placeholder="검색어"/>
-                             <button class="btn btn-primary btn-icon-split">검색</button> 
-                          </form>
-                          
+                            <div class="form-group col-sm-6 row">
+                            <input type="search" name="query" class="form-control form-control-user" placeholder="검색어"/>
+                          </div>
+                            <div class="col-sm-2 mb-3 mb-sm-0 text-center row">
+                              <a class="btn btn-facebook btn-user btn-block">
+                                검색
+                              </a>
+                              </div>
+                          </form>                  
               </div>
             </div>
           </div>
@@ -260,14 +276,20 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
+      <hr>
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
+            <span>PETSPITAL</span><br><br>
+            <span>서울특별시 관악구 신림동 1441-20</span><br><br>
+            <span>☎ 010 3929 6743</span><br><br>
+            <span>☎ 010 3688 6812</span>
             <span>Copyright &copy; Your Website 2020</span>
           </div>
         </div>
       </footer>
       <!-- End of Footer -->
+
 
     </div>
     <!-- End of Content Wrapper -->

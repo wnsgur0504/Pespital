@@ -22,16 +22,21 @@
 <script>
 $(function(){
   $.get("/diagnosis/checkPet", function (data, status) {
-        if (data.length!=0) {
-          for(var i=0;i<data.length;i++){
-            var pet=data[i];
-            $("<label>"+pet.pet_name+"<input type='radio' name='myPet' value="+pet.pet_id+"></label>").appendTo($("#myPet"));
-          }
-        } else {
-          alert("반려동물을 등록해주세요!");
-          location.href="/member";
-        }
-      });
+                      
+                      if (data.length!=0) {
+                        for(var i=0;i<data.length;i++){
+                          var pet=data[i];
+                          
+                          $("<div class='col-sm-3 text-center'>"+"<label>"+pet.pet_name+"<input type='radio' class='form-control form-control-user' name='myPet' value="+pet.pet_id+"></label>"+"</div>").appendTo($("#myPet"));
+                        
+                        }
+                      } else {
+                        alert("반려동물을 등록해주세요!");
+                        location.href="/member";
+                      }
+                    
+                    });
+      
   $("#regist").click(function(){
     if(checkValue()){
       $("form").attr({
@@ -79,10 +84,11 @@ function checkValue(){
                     <div class="form-group">
                       <input type="text" name="dia_title" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp" placeholder="제목">
                     </div>
-                    <div class="form-group" id="myPet">
+                    <div class="form-group row" id="myPet">
+                      
                       <!-- <label ></label><input type="text" name="myPet" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp" placeholder="진료대상"> -->
                     </div>
-                    <div class="form-group">
+                    <div class="form-group ">
                       <textarea  name="dia_text" rows="12" class="form-control " id="exampleInputPassword" aria-describedby="fileHelp"
                       multiple placeholder="내용"></textarea>
                     </div>

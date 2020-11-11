@@ -41,9 +41,10 @@ router.post("/login", function (req, res, next) {
                 if (member.type_id == 1) {
                     req.session.displayName = member.member_nickname;
                     req.session.displayID = uid;
+                    req.session.type = member.type_id;
                     req.session.save(function () {
                         // res.redirect('/board/list');
-                        res.redirect("/admin");
+                        res.redirect("/member");
                     }
                     );
                 } else {
@@ -51,7 +52,8 @@ router.post("/login", function (req, res, next) {
                     req.session.displayID = uid;
                     req.session.save(function () {
                         // res.redirect('/board/list');
-                        res.render("A_main", {"nickname":req.session.displayName});
+                        // res.send({result:0});
+                        res.redirect("/member");
                     });
                 }
             }
@@ -60,8 +62,10 @@ router.post("/login", function (req, res, next) {
 });
 
 router.get("/logout", function (req, res, next) {
+    console.log("ff");
     delete req.session.displayName;
     delete req.session.displayID;
+    delete req.session.type;
     req.session.save(function () {
         res.redirect('/member');
     });
@@ -113,6 +117,7 @@ router.get("/list", function (req, res) {
             res.render("G_member", { "memberArray": record, "nickname": nickname,"startPage": startPage,
             "endPage": endPage,
             "currentPage": currentPage,
+             "type":req.session.type,
             "totalPage": totalPage});
             // console.log(record[0]);
         }
@@ -169,7 +174,7 @@ router.post("/forgot_password", function(req, res){
                     service: 'gmail',
                     auth: {
                       user: 'cjh960504@gmail.com',  // gmail 계정 아이디를 입력
-                      pass: ""        // gmail 계정의 비밀번호를 입력
+                      pass: ''          // gmail 계정의 비밀번호를 입력
                     }
                 });
                 let mailOptions = {
@@ -236,7 +241,7 @@ router.get("/myEdit", function (req, res) {
         if (error) {
             console.log("내 정보 조회 에러", error);
         } else {
-            res.render("M_myEdit", { "member": record[0] });
+            res.render("M_myEdit", { "member": record[0] , "type":req.session.type});
         }
     });
 });

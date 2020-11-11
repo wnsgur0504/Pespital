@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>PETSPITAL 회원관리</title>
+  <title>PETSPITAL</title>
 
   <!-- Custom fonts for this template-->
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -31,7 +31,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="main.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -43,11 +43,13 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="/member">
+        <a class="nav-link" href="#">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>진단</span></a>
       </li>
- 
+
+
+
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
@@ -140,34 +142,43 @@
 
             <!-- Nav Item - User Information -->
             <%if(nickname!=""){%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="/member/myEdit">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내정보수정
                 </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    내정보수정
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    내동물관리
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    로그아웃
-                  </a>
-                </div>
-              </li>
-              <%}else{%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="login.html" role="button">
-                  로그인
+                <a class="dropdown-item" href="/animal/myPet">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내동물관리
                 </a>
-              </li>
-              <%}%>
+                <a class="dropdown-item" href="/board/myBoard">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내글관리
+                </a>
+                <a class="dropdown-item" href="/diagnosis/myDiagnosis">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내진료관리
+                </a>
+                <a class="dropdown-item" href="/member/logout"  >
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  로그아웃
+                </a>
+
+              </div>
+            </li>
+            <%}else{%>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="/html/login.html" role="button">
+                로그인
+              </a>
+            </li>
+            <%}%>
           </ul>
 
         </nav>
@@ -179,65 +190,68 @@
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">회원관리</h6>
+              <h6 class="m-0 font-weight-bold text-primary">자유게시판</h6>
             </div>
             <div class="card-body">
-              <a href="/member/beforeRegist" class="btn btn-primary btn-icon-split">
+              <a href="/board/beforeRegist" class="btn btn-primary btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-flag"></i>
                 </span>
                 <span class="text">글쓰기</span>
               </a>
+              <hr>
                 <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>아이디</th>
-                      <th>비밀번호</th>
-                      <th>타입</th>
-                      <th>이름</th>
-                      <th>이메일</th>
-                      <th>연락처</th>
-                      <th>닉네임</th>
-                      <th>가입날짜</th>
+                      <th>제목</th>
+                      <th>작성자</th>
+                      <th>등록날짜</th>
+                      <th>조회수</th>
+                      <th>👍</th>
                     </tr>
                   </thead>
+                  <%for(var i=0;i<boardArray.length;i++){%>
+                    <%var board = boardArray[i]%>
                   <tbody>
-                    <%for(var i=0;i<memberArray.length;i++){%>
-                      <%var member = memberArray[i]%>
-                    <tr>
-                      <td><a href="/member/detail?member_id=<%=member.member_id%>">
-                        <%=member.member_id%></a></td>
-                        <td><%=member.password%></td>
-                        <td><%=member.type_name%></td>
-                        <td><%=member.member_name%></td>
-                        <td><%=member.email_id%></td>
-                        <td><%=member.member_phone%></td>
-                        <td><%=member.member_nickname%></td>
-                        <td><%=member.regdate%></td>
+                      <tr>
+                        <input type="hidden" name="board_id" value="<%=board.board_id%>" />
+                      <td><a href="/board/detail?board_id=<%=board.board_id%>&member_id=<%=id%>"><%=board.board_title%>(<%=board.cnt%>)</a></td>
+                      <td><%=board.member_nickname%></td>
+                      <td><%=board.regdate%></td>
+                      <td><%=board.board_hit%></td>
+                      <td><%=board.board_good%></td>
                     </tr>
-                    <%}%>
                   </tbody>
+                  <%}%>
                 </table>
+                <span>
                 <%if(startPage>1){%>
-                  <a href="/member/list?currentPage=1"><<</a>
+                  <a href="/board/myBoard?currentPage=1"><<</a> 
                       <%}%>
-                      <%if(currentPage>1){%>
-                      <a href="/member/list?currentPage=<%=currentPage-1%>&query=<%=query%>&sort=<%=sort%>"><</a>
+                <%if(currentPage>1){%>
+                      <a href="/board/myBoard?currentPage=<%=currentPage-1%>"><</a>
                           <%}%>
-                          <%for(var i=startPage; i<=endPage;i++){%>
+                
+                <%for(var i=startPage; i<=endPage;i++){%>
                           <%if(i==currentPage){%>
                           <%=i%>
                           <%}else{%>
-                          <a href="/member/list?currentPage=<%=i%>&query=<%=query%>&sort=<%=sort%>"><%=i%></a>
+                          <a href="/board/myBoard?currentPage=<%=i%>"><%=i%></a>
                           <%}%>
-                          <%}%>
+                <%}%>
                           <%if(currentPage<totalPage){%>
-                          <a href="/member/list?currentPage=<%=currentPage+1%>&query=<%=query%>&sort=<%=sort%>">></a>
+                          <a href="/board/myBoard?currentPage=<%=currentPage+1%>">></a>
                           <%}%>
-                          <%if(endPage<totalPage){%>
-                          <a href="/member/list?currentPage=<%=totalPage%>&query=<%=query%>&sort=<%=sort%>">>></a>
+                <%if(endPage<totalPage){%>
+                          <a href="/board/myBoard?currentPage=<%=totalPage%>">>></a>
                           <%}%>
+                        </span>
+                          <form action="">
+                            <input type="search" name="query" placeholder="검색어"/>
+                             <button class="btn btn-primary btn-icon-split">검색</button> 
+                          </form>
+                          
               </div>
             </div>
           </div>
@@ -250,15 +264,20 @@
       </div>
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
+     <!-- Footer -->
+     <hr>
+     <footer class="sticky-footer bg-white">
+       <div class="container my-auto">
+         <div class="copyright text-center my-auto">
+           <span>PETSPITAL</span><br><br>
+           <span>서울특별시 관악구 신림동 1441-20</span><br><br>
+           <span>☎ 010 3929 6743</span><br><br>
+           <span>☎ 010 3688 6812</span>
+           <span>Copyright &copy; Your Website 2020</span>
+         </div>
+       </div>
+     </footer>
+     <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
@@ -281,8 +300,8 @@
   <!-- Custom scripts for all pages-->
   <script src="/js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins
-  <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+  <!-- Page level plugins -->
+  <!-- <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
 
   <!-- Page level custom scripts -->

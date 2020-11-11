@@ -82,18 +82,9 @@ router.get("/list", function(req, res){
         }
     });
 
-    if (query) {
-        query = req.query.query;
         var sql="select diagnosis.dia_id, diagnosis.member_id, diagnosis.pet_id, diagnosis.dia_title, diagnosis.regdate, pet.pet_name, member.member_nickname ";
-        sql += "from diagnosis left join member on diagnosis.member_id=member.member_id  left join pet on diagnosis.pet_id = pet.pet_id where ispublic=1 AND (diagnosis.dia_title like '%"+query+"%' ";
-        sql+= "OR diagnosis.dia_text like '%"+query+"%') order by dia_id desc limit ?,?";
-    } else {
-        query = "";
-        var sql="select diagnosis.dia_id, diagnosis.member_id, diagnosis.pet_id, diagnosis.dia_title, diagnosis.regdate, pet.pet_name, member.member_nickname ";
-        sql += "from diagnosis left join member on diagnosis.member_id=member.member_id  left join pet on diagnosis.pet_id = pet.pet_id where ispublic=1 order by dia_id desc limit ?,?";
-        console.log("검색어 없을때");
-    }
-    
+        sql += "from diagnosis left join member on diagnosis.member_id=member.member_id  left join pet on diagnosis.pet_id = pet.pet_id where ispublic=1 order by diagnosis.dia_id desc limit ?,?";
+  
 
     // var sql="select diagnosis.dia_id, diagnosis.member_id, diagnosis.pet_id, diagnosis.dia_title, diagnosis.regdate, pet.pet_name, member.member_nickname ";
     // sql += "from diagnosis left join member on diagnosis.member_id=member.member_id  left join pet on diagnosis.pet_id = pet.pet_id where ispublic=1 order by dia_id desc limit ?,?";
@@ -107,6 +98,7 @@ router.get("/list", function(req, res){
             if(req.session.displayID){
                 var id = req.session.displayID;
                 var nickname = req.session.displayName;
+                console.log(record);
                 res.render("G_diagnosis",  {
                             "diagnosisArray":record,
                             // "id":id,
@@ -115,6 +107,7 @@ router.get("/list", function(req, res){
                             "endPage":endPage,
                             "currentPage":currentPage,
                             "totalPage":totalPage,
+                            "type":req.session.type,
                             "query": query,
                             "sort": ""
                         }); //ejs파일 렌더링
@@ -128,7 +121,7 @@ router.get("/list", function(req, res){
                             "currentPage":currentPage,
                             "totalPage":totalPage,
                             "query": query,
-                            "sort": ""
+                            "sort": "", "type":req.session.type
                         }); //ejs파일 렌더링
             }
         }  
@@ -152,7 +145,8 @@ router.get('/detail',function(req, res){
                 "diagnosis":record[0][0], 
                 "id":req.session.displayID,
                 // "isRecomed":record[2][0],
-                "imgArray":record[1]
+                "imgArray":record[1], "type":req.session.type
+                
             });
             }
         });
@@ -227,14 +221,85 @@ router.post("/edit", function(req, res){
 router.post("/delete", function(req, res){
     console.log(req.body);
     var dia_id = req.body.dia_id;
-    var sql="delete from diagnosis where dia_id=?";
+    var sql="delete from diagnosis_img where dia_id=?";
     con.query(sql, [dia_id], function(error){
         if(error){
-            console.log("진료기록 삭제 에러");
+            console.log("진료기록 이미지 삭제 에러", error);
             res.redirect("/diagnosis/detail?dia_id="+dia_id);
         }else{
             res.redirect("/diagnosis/list");
         }
-    }); 
+    });
+    sql =  "delete from diagnosis where dia_id=?";
+    con.query(sql,[dia_id], function(error){
+        if(error){
+            console.log("진료기록 삭제 에러", error);
+            res.redirect("/diagnosis/list");
+        }else{
+            res.redirect("/diagnosis/list");
+        }
+    }) ;
+});
+
+router.get("/myDiagnosis", function(req, res){
+    var member_id = req.session.displayID;
+    var rowPerPage = 10; //페이지당 보여줄 글 목록:10개
+    var currentPage = 1; //현재페이지, 일단 초기화 상태
+    var totalRow = 0;
+    var totalPage = 0;
+    var startPage = 0, endPage = 0;
+
+    if(member_id){
+        if (req.query.currentPage) {
+            currentPage = parseInt(req.query.currentPage);
+        }
+
+        var beginRow = (currentPage - 1) * rowPerPage;
+        var sql = "select count(*) as cnt from diagnosis where member_id=?";
+
+        con.query(sql, [member_id], function(error, record){
+            if(error){
+                console.log("내진료 글 개수 조회 에러", error);
+            }else{
+                totalRow = record[0].cnt;
+                totalPage = Math.floor(totalRow / rowPerPage);
+                if (totalRow % rowPerPage > 0) {
+                    totalPage++;
+                }
+    
+                if (totalPage < currentPage) {
+                    page = totalPage;
+                }
+    
+                startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
+                endPage = startPage + rowPerPage - 1;
+                if (endPage > totalPage) {
+                    endPage = totalPage;
+                }
+            }
+        });
+        
+        sql="select diagnosis.dia_id, diagnosis.member_id, diagnosis.pet_id, diagnosis.dia_title, diagnosis.regdate, pet.pet_name, member.member_nickname ";
+        sql += "from diagnosis left join member on diagnosis.member_id=member.member_id  left join pet on diagnosis.pet_id = pet.pet_id where pet.member_id=? order by dia_id desc limit ?,?";
+        con.query(sql, [member_id,beginRow, rowPerPage], function(error, record){
+            if(error){
+                console.log("내진료 글  조회 에러", error);
+            }else{
+                var id = req.session.displayID;
+                var nickname = req.session.displayName;
+                res.render("A_myDiagnosis",  {
+                            "diagnosisArray":record,
+                            "id":id,
+                            "nickname":nickname,
+                            "startPage":startPage,
+                            "endPage":endPage,
+                            "currentPage":currentPage,
+                            "totalPage":totalPage, "type":req.session.type
+                        }); //ejs파일 렌더링
+            }
+        });
+    }else{
+        res.redirect("/html/login.html");
+    }
 });
 module.exports = router;

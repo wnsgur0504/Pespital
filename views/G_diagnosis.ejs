@@ -31,7 +31,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="main.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -42,28 +42,20 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="main.html">
+      <li class="nav-item">
+        <a class="nav-link" href="/member">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>진단</span></a>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="map.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>지도</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="diagnosis.html">
+        <a class="nav-link" href="/diagnosis/list">
           <i class="fas fa-fw fa-table"></i>
           <span>진료기록</span></a>
       </li>
@@ -73,11 +65,17 @@
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="board.html">
+        <a class="nav-link" href="/board/list">
           <i class="fas fa-fw fa-table"></i>
           <span>게시판</span></a>
       </li>
-
+      <%if(type==1){%>
+        <li class="nav-item">
+          <a class="nav-link" href="/member/list">
+            <i class="fas fa-fw fa-table"></i>
+            <span>회원목록</span></a>
+        </li>
+        <%}%>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -104,7 +102,7 @@
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
               <input type="text" class="form-control bg-light border-0 small" placeholder="검색..." aria-label="Search"
                 aria-describedby="basic-addon2">
@@ -114,7 +112,7 @@
                 </button>
               </div>
             </div>
-          </form>
+          </form> -->
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -144,39 +142,49 @@
 
             <!-- Nav Item - User Information -->
             <%if(nickname!=""){%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=nickname%></span>
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="/member/myEdit">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내정보수정
                 </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    내정보수정
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    내동물관리
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    로그아웃
-                  </a>
-                </div>
-              </li>
-              <%}else{%>
-              <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="login.html" role="button">
-                  로그인
+                <a class="dropdown-item" href="/animal/myPet">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내동물관리
                 </a>
-              </li>
-              <%}%>
+                <a class="dropdown-item" href="/board/myBoard">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내글관리
+                </a>
+                <a class="dropdown-item" href="/diagnosis/myDiagnosis">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  내진료관리
+                </a>
+                <a class="dropdown-item" href="/member/logout"  >
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  로그아웃
+                </a>
+
+              </div>
+            </li>
+            <%}else{%>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="/html/login.html" role="button">
+                로그인
+              </a>
+            </li>
+            <%}%>
           </ul>
 
         </nav>
         <!-- End of Topbar -->
 
+  
         <!-- Begin Page Content -->
         <div class="container-fluid">
           
@@ -192,6 +200,7 @@
                 </span>
                 <span class="text">글쓰기</span>
               </a>
+              <hr>
                 <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
@@ -212,7 +221,7 @@
                       <td><a
                         href="/diagnosis/detail?dia_id=<%=dia.dia_id%>">
                         <%=dia.dia_title%></a></td>
-                      <td><%=dia.petname%></td>
+                      <td><%=dia.pet_name%></td>
                       <td><%=dia.member_nickname%></td>
                       <td><%=dia.regdate%></td>
                     </tr>
@@ -250,15 +259,20 @@
       </div>
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
+       <!-- Footer -->
+       <hr>
+       <footer class="sticky-footer bg-white">
+         <div class="container my-auto">
+           <div class="copyright text-center my-auto">
+             <span>PETSPITAL</span><br><br>
+             <span>서울특별시 관악구 신림동 1441-20</span><br><br>
+             <span>☎ 010 3929 6743</span><br><br>
+             <span>☎ 010 3688 6812</span>
+             <span>Copyright &copy; Your Website 2020</span>
+           </div>
+         </div>
+       </footer>
+       <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
@@ -281,9 +295,9 @@
   <!-- Custom scripts for all pages-->
   <script src="/js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
+  <!-- Page level plugins
   <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
 
   <!-- Page level custom scripts -->
   <script src="/js/demo/datatables-demo.js"></script>

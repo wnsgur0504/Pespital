@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>PETSPITAL 내동물보기</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    if(checkValue()){
+        $("#edit").click(function(){
+            if(confirm("수정하시겠어요?")){
+            $("form").attr({
+            "method":"post",
+            "action":"/animal/edit"
+            });
+            $("form").submit();
+            }
+        });
+        $("#del").click(function(){
+        if(confirm("삭제하시겠어요?")){
+            $("form").attr({
+            "method":"post",
+            "action":"/animal/delete"
+            });
+            $("form").submit();
+            }
+        });
+    }
+});
+function checkValue(){
+  if($("form input[name=animal_id]").val()==""){
+    return false;
+  }else if($("form input[name=pet_name]").val()==""){
+    return false;
+  }else{
+    return true;
+  }
+}
+</script>
+<style>
+img {
+  max-width: 100%;
+  height: auto !important;
+}
+
+ul {
+  list-style: none;
+}
+</style>
+</head>
+
+<body class="bg-gradient-primary">
+
+  <div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-8 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-8" style="margin: auto">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">내 동물 보기</h1>
+                  </div>
+                  <form class="user">
+                    <%if(pet.member_id==id){%>
+                      <input type="hidden" name="pet_id" value="<%=pet.pet_id%>" />
+                      <input type="hidden" name="member_id" value="<%=pet.member_id%>" />
+                      <input type="hidden" name="animal_id" value="<%=pet.animal_id%>" />
+                      <div class="form-group row">
+                        <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                          <label>강아지<input type="radio" name="animal_id"  value="1" class="form-control form-control-user" <%if(pet.animal_id==1){%>checked<%}%>></label>
+                        </div>
+                        <div class="col-sm-6 text-center">
+                          <label>고양이<input type="radio" name="animal_id" value="2" class="form-control form-control-user" <%if(pet.animal_id==2){%>checked<%}%>></label>
+                        </div>
+                      </div>
+                    <div class="form-group">
+                      <label>반려견이름</label>
+                      <input type="text" name="pet_name" value="<%=pet.pet_name%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp"  >
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a href="/animal/myPet" class="btn btn-primary btn-user btn-block">
+                      목록
+                    </a>
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a id="edit" class="btn btn-facebook btn-user btn-block">
+                      수정
+                    </a>
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a id="del" class="btn btn-google btn-user btn-block">
+                      삭제
+                    </a>
+                    </div>
+                </div>
+                    <%}else{%>
+                        <h1>접근할 수 없는 아이디입니다!</h1>
+                        <hr>
+                    <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                    <a href="/member" class="btn btn-primary btn-user btn-block">
+                      메인으로
+                    </a>
+                    </div>
+                    <%}%>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
