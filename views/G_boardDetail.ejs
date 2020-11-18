@@ -157,7 +157,7 @@
                       <input type="text" name="board_bad" value="<%=board.board_bad%>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp"  readonly  >
                     </div></div>
                     <div class="form-group">
-                      <textarea rows="12" class="form-control " id="exampleInputPassword" placeholder="내용"><%=board.board_text%></textarea>
+                      <textarea rows="12" name="board_text"  class="form-control " id="exampleInputPassword" placeholder="내용"><%=board.board_text%></textarea>
                     </div>
                     <div class="form-group">
                       <%for(var i=0;i<imgArray.length;i++){%>
@@ -175,7 +175,7 @@
                     </div> -->
                     <div class="form-group row">
                       <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                      <a onclick="history.back()" class="btn btn-primary btn-user btn-block">
+                      <a href="/board/list" class="btn btn-primary btn-user btn-block">
                         목록
                       </a>
                       </div>

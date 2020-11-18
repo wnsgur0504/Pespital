@@ -69,6 +69,7 @@
           <i class="fas fa-fw fa-table"></i>
           <span>게시판</span></a>
       </li>
+      <hr class="sidebar-divider my-0">
       <%if(type==1){%>
         <li class="nav-item">
           <a class="nav-link" href="/member/list">
@@ -201,7 +202,11 @@
                 <span class="text">글쓰기</span>
               </a>
               <hr>
-                <div class="table-responsive">
+              <a href="/diagnosis/list">전체 | </a>
+              <a href="/diagnosis/list?animal_id=1">강이지만🐶 | </a>
+              <a href="/diagnosis/list?animal_id=2">고양이만🐱</a>
+              <hr>
+              <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
@@ -221,7 +226,7 @@
                       <td><a
                         href="/diagnosis/detail?dia_id=<%=dia.dia_id%>">
                         <%=dia.dia_title%></a></td>
-                      <td><%=dia.pet_name%></td>
+                      <td><%=dia.pet_name%><%if(dia.animal_id==1){%>🐶<%}else if(dia.animal_id==2){%>🐱<%}%></td>
                       <td><%=dia.member_nickname%></td>
                       <td><%=dia.regdate%></td>
                     </tr>
@@ -232,22 +237,32 @@
                   <a href="/diagnosis/list?currentPage=1"><<</a>
                       <%}%>
                       <%if(currentPage>1){%>
-                      <a href="/diagnosis/list?currentPage=<%=currentPage-1%>&query=<%=query%>&sort=<%=sort%>"><</a>
+                      <a href="/diagnosis/list?currentPage=<%=currentPage-1%>&animal_id=<%=animal_id%>"><</a>
                           <%}%>
                           <%for(var i=startPage; i<=endPage;i++){%>
                           <%if(i==currentPage){%>
                           <%=i%>
                           <%}else{%>
-                          <a href="/diagnosis/list?currentPage=<%=i%>&query=<%=query%>&sort=<%=sort%>"><%=i%></a>
+                          <a href="/diagnosis/list?currentPage=<%=i%>&animal_id=<%=animal_id%>"><%=i%></a>
                           <%}%>
                           <%}%>
                           <%if(currentPage<totalPage){%>
-                          <a href="/diagnosis/list?currentPage=<%=currentPage+1%>&query=<%=query%>&sort=<%=sort%>">></a>
+                          <a href="/diagnosis/list?currentPage=<%=currentPage+1%>&animal_id=<%=animal_id%>">></a>
                           <%}%>
                           <%if(endPage<totalPage){%>
-                          <a href="/diagnosis/list?currentPage=<%=totalPage%>&query=<%=query%>&sort=<%=sort%>">>></a>
+                          <a href="/diagnosis/list?currentPage=<%=totalPage%>&animal_id=<%=animal_id%>">>></a>
                           <%}%>
               </div>
+              <form action="">
+                <div class="form-group col-sm-6 row">
+                <input type="search" name="query" class="form-control form-control-user" placeholder="검색어"/>
+              </div>
+                <div class="col-sm-2 mb-3 mb-sm-0 text-center row">
+                  <button class="btn btn-facebook btn-user btn-block">
+                    검색
+                  </a>
+                  </div>
+              </form> 
             </div>
           </div>
 

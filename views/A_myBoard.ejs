@@ -69,6 +69,8 @@
           <i class="fas fa-fw fa-table"></i>
           <span>게시판</span></a>
       </li>
+
+      <hr class="sidebar-divider my-0">
       <%if(type==1){%>
         <li class="nav-item">
           <a class="nav-link" href="/member/list">
@@ -247,10 +249,16 @@
                           <a href="/board/myBoard?currentPage=<%=totalPage%>">>></a>
                           <%}%>
                         </span>
-                          <form action="">
-                            <input type="search" name="query" placeholder="검색어"/>
-                             <button class="btn btn-primary btn-icon-split">검색</button> 
-                          </form>
+                        <form action="">
+                          <div class="form-group col-sm-6 row">
+                          <input type="search" name="query" class="form-control form-control-user" placeholder="검색어"/>
+                        </div>
+                          <div class="col-sm-2 mb-3 mb-sm-0 text-center row">
+                            <a class="btn btn-facebook btn-user btn-block">
+                              검색
+                            </a>
+                            </div>
+                        </form>
                           
               </div>
             </div>

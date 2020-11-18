@@ -25,6 +25,7 @@
 $(function(){
   $("#edit").click(function(){
     if(checkValue()){
+      if (confirm("수정하시겠어요?")) {
       $("form").attr({
           "method":"post",
           "action":"/diagnosis/edit"
@@ -32,9 +33,11 @@ $(function(){
         $("form").submit();
         return true;
       }
+    }
   });
   $("#del").click(function(){
     if(checkValue()){
+      if (confirm("삭제하시겠어요?")) {
       $("form").attr({
           "method":"post",
           "action":"/diagnosis/delete"
@@ -42,6 +45,7 @@ $(function(){
         $("form").submit();
         return true;
       }
+    }
   });
 });
 function checkValue(){
@@ -89,6 +93,9 @@ function checkValue(){
                         <input type="text" name="myPet" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp"  value="<%=diagnosis.pet_name%>" readonly>
                       </div>
                       <div class="form-group">
+                        <textarea name="dia_petinfo" rows="2" class="form-control " multiple readonly><%=diagnosis.dia_petinfo%></textarea>
+                      </div>
+                      <div class="form-group">
                         <textarea  name="dia_text" rows="12" class="form-control " id="exampleInputPassword" aria-describedby="fileHelp"
                         multiple placeholder="내용"><%=diagnosis.dia_text%></textarea>
                       </div>
@@ -121,7 +128,7 @@ function checkValue(){
                       <hr>
                       <div class="form-group row">
                         <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                      <a onclick="history.back()" class="btn btn-primary btn-user btn-block">
+                      <a href="/diagnosis/list" class="btn btn-primary btn-user btn-block">
                         목록
                       </a>
                       </div>
@@ -148,6 +155,10 @@ function checkValue(){
                       </div>
                       <div class="form-group">
                         <input type="text" name="myPet" class="form-control form-control-user" id="exampleInputText" aria-describedby="emailHelp"  value="<%=diagnosis.pet_name%>" readonly>
+                      </div>
+                      <div class="form-group">
+                        <textarea name="dia_petinfo" rows="2" class="form-control " multiple readonly
+                          ><%=diagnosis.dia_petinfo%></textarea>
                       </div>
                       <div class="form-group">
                         <textarea  name="dia_text" rows="12" class="form-control " id="exampleInputPassword" aria-describedby="fileHelp"

@@ -18,7 +18,7 @@ var express = require('express')
   , bodyParser = require('body-parser');
 
 var app = express();	// 어플리케이션 생성
-var port = 8888;		// 어플리케이션 포트
+var port = 8889;		// 어플리케이션 포트
 var options = {
   host : 'localhost'
   ,port : 3306

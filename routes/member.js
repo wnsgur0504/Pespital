@@ -88,7 +88,7 @@ router.get("/list", function (req, res) {
     var nickname = req.session.displayName;
     con.query(sql, function (error, record) {
         if (error) {
-            console.log("게시판 글 개수 조회 에러", error);
+            console.log("멤버 수 조회 에러", error);
         } else {
             console.log(record[0].cnt);
             totalRow = record[0].cnt;
@@ -108,8 +108,8 @@ router.get("/list", function (req, res) {
             }
         }
     });
-    sql = "select * from member";
-    con.query(sql, function (error, record, fields) {
+    sql = "select * from member limit ?, ?";
+    con.query(sql, [beginRow, rowPerPage],function (error, record, fields) {
         if (error) {
             console.log("멤버 목록 조회 에러", error);
         } else {
@@ -119,7 +119,7 @@ router.get("/list", function (req, res) {
             "currentPage": currentPage,
              "type":req.session.type,
             "totalPage": totalPage});
-            // console.log(record[0]);
+            console.log(record[0]);
         }
     });
 })
@@ -128,13 +128,13 @@ router.post("/forgot_id", function(req, res){
     var name = req.body.name;
     var phone = req.body.phone;
     var email = req.body.email;
-    console.log(name);
+    console.log(name, phone, email);
     var sql = "select member_id from member where member_name=? and member_phone=? and email_id=?";
     con.query(sql,[name, phone, email], function(error, record){
         if(error){
             console.log("아이디 찾기 에러", error);
         }else{
-            // console.log(record[0].member_id);
+            console.log(record[0]);
             if(record.length==0){
                 res.send({member_id:"0"});
             }else{
@@ -174,7 +174,7 @@ router.post("/forgot_password", function(req, res){
                     service: 'gmail',
                     auth: {
                       user: 'cjh960504@gmail.com',  // gmail 계정 아이디를 입력
-                      pass: ''          // gmail 계정의 비밀번호를 입력
+                      pass: 'chlwnsgur2wl@'          // gmail 계정의 비밀번호를 입력
                     }
                 });
                 let mailOptions = {
@@ -226,6 +226,23 @@ router.post("/detail/a_edit", function(req, res){
     con.query(sql, [password , member_id], function(error, record){
         if(error){
             console.log("관리자 권한 멤버 정보 수정 실패", error);
+        }else{
+            
+                res.redirect("/member/list");
+            
+        }
+    });
+});
+
+router.post("/detail/a_delete", function(req, res){
+    var member_id = req.body.member_id;
+    var password = req.body.password;
+
+    var sql = "delete from member where member_id=?";
+    
+    con.query(sql, [member_id], function(error, record){
+        if(error){
+            console.log("관리자 권한 멤버 정보 삭제 실패", error);
         }else{
             
                 res.redirect("/member/list");
@@ -314,12 +331,14 @@ router.get("/memberRegist/idCheck", function (req, res) {
     )
 });
 
+
 router.get("/memberRegist/nicknameCheck", function (req, res) {
     console.log(req.query.member_nickname);
-    var sql = "select count(member_nickname) as cnt from member where member_nickname='" + req.query.member_nickname + "'";
+    var member_nickname = member_nickname;
+    var sql = "select count(member_id) as cnt from member where member_id='" + member_nickname+ "'";
     con.query(sql, function (error, record, fields) {
         if (error) {
-            console.log("닉네임 체크 오류", error);
+            console.log("아이디 체크 오류", error);
         } else {
             console.log(record);
             res.send({"cnt":record[0].cnt.toString()});
@@ -327,4 +346,6 @@ router.get("/memberRegist/nicknameCheck", function (req, res) {
     }
     )
 });
+
+
 module.exports = router;

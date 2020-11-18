@@ -76,6 +76,7 @@
           <i class="fas fa-fw fa-table"></i>
           <span>게시판</span></a>
       </li>
+      <hr class="sidebar-divider my-0">
       <%if(type==1){%>
         <li class="nav-item">
           <a class="nav-link" href="/member/list">
@@ -220,7 +221,17 @@
     <div class="card-body">
       <div class="row no-gutters align-items-center text-center">
         <div class="col mr-2">
-          <a class="h5 mb-0 font-weight-bold text-gray-800" href="/animal/detail?pet_id=<%=pet.pet_id%>"><%=pet.pet_name%></a>
+          <a class="h5 mb-0 font-weight-bold text-gray-800" href="/animal/detail?pet_id=<%=pet.pet_id%>"><%=pet.pet_name%></a><br>
+          <a class="h5 mb-0 font-weight-bold text-gray-800"><%=pet.pet_type%></a><br>
+          <a class="h5 mb-0 font-weight-bold text-gray-800"><%=pet.pet_age%>살</a><br>
+          <%if(pet.pet_weight){%>
+          <a class="h5 mb-0 font-weight-bold text-gray-800"><%=pet.pet_weight%>kg</a><br>
+          <%}%> 
+          <%if(pet.pet_gender==1){%>
+          <a class="h5 mb-0 font-weight-bold text-gray-800">남</a>
+          <%}else{%>
+            <a class="h5 mb-0 font-weight-bold text-gray-800">여</a>
+          <%}%>  
       </div>
     </div>
   </div>
@@ -234,7 +245,17 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center text-center">
           <div class="col mr-2">
-            <a class="h5 mb-0 font-weight-bold text-gray-800" href="/animal/detail?pet_id=<%=pet.pet_id%>"><%=pet.pet_name%></a>
+            <a class="h5 mb-0 font-weight-bold text-gray-800" href="/animal/detail?pet_id=<%=pet.pet_id%>"><%=pet.pet_name%></a><br>
+            <a class="h5 mb-0 font-weight-bold text-gray-800"><%=pet.pet_type%></a><br>
+            <a class="h5 mb-0 font-weight-bold text-gray-800"><%=pet.pet_age%>살</a><br>
+            <%if(pet.pet_weight){%>
+            <a class="h5 mb-0 font-weight-bold text-gray-800"><%=pet.pet_weight%>kg</a><br>
+            <%}%> 
+            <%if(pet.pet_gender==1){%>
+            <a class="h5 mb-0 font-weight-bold text-gray-800">남</a>
+            <%}else{%>
+              <a class="h5 mb-0 font-weight-bold text-gray-800">여</a>
+            <%}%>  
         </div>
       </div>
     </div>
