@@ -13,13 +13,7 @@ var con = mysql.createConnection({
 
 con.connect();
 
-// router.get("/main", function(req, res){
-//     if(req.session.displayName){
-//         res.render("A_main", {"nickname":req.session.displayName});
-//     }else{
-//         res.render("A_main", {"nickname":""});
-//     }
-// });
+
 router.get("/login", function (req, res, next) {
     // res.render("index", {title:"Express"});
     res.redirect("/html/login.html");

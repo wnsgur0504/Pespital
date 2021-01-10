@@ -12,8 +12,6 @@ var storage = multer.diskStorage({
 
     },
     filename: function (req, file, cb) {
-        // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        // cb(null, file.originalname + '-' + uniqueSuffix)
 
         if (file.originalname != null) {
             fileArray.push(file.originalname);
@@ -87,12 +85,12 @@ router.get("/list", function (req, res, next) {
     if (query) {
         query = req.query.query;
         sql = "select board.board_id, board.board_title, board.regdate, board.board_good, board.board_hit, member.type_id, member.member_nickname,  (select count(*) from board_reply where board.board_id = board_reply.board_id) as cnt from board left join member on board.member_id=member.member_id where board_title like '%" + query + "%' OR board_title like '%" + query + "%' order by " + sort + " desc limit ?,?";
-        // sql += "select count(*) from board_reply";
+
         console.log("검색어 있을때");
     } else {
         query = "";
         sql = "select board.board_id, board.board_title, board.regdate, board.board_good, board.board_hit, member.type_id,member.member_nickname,  (select count(*) from board_reply where board.board_id = board_reply.board_id) as cnt from board left join member on board.member_id=member.member_id order by " + sort + " desc limit ?,?";
-        // sql += "select count(*) from board_reply where board_id="+board_id;
+
         console.log("검색어 없을때");
     }
 
@@ -100,9 +98,6 @@ router.get("/list", function (req, res, next) {
         if (error) {
             console.log("게시판 글 목록 조회 에러", error);
         } else {
-            // console.log(record);
-            console.log(record[0]);
-            // console.log(lastPage);
             if (req.session.displayID) {
                 var id = req.session.displayID;
                 var nickname = req.session.displayName;
@@ -143,20 +138,8 @@ router.get("/beforeRegist", function (req, res) {
         res.redirect("/member/login");
     }
 });
-// app.post('/upload', upload.array("many"), function(req, res){
-//     // res.writeHead(300, {"Content-Type":"text/html; charset=utf8"});
-//     console.log(req.body.test);
-//     for(var i=0;i<fileArray.length;i++){
-//         console.log(fileArray[i]);
-//     }
-//     res.render("test",  {
-//         "imageArray": fileArray
-//     }); //ejs파일 렌더링
-//     fileArray=[];
-//     // res.send("good");
-// });
+
 router.post("/regist", upload.array("images"), function (req, res, next) {
-    //사진처리 추가 필요
     console.log(fileArray[0]);
     if (req.session.displayName) {
         var board_title = req.body.board_title;
